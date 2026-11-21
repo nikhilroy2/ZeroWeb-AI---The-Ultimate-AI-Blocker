@@ -1,7 +1,8 @@
 /**
  * ZeroWeb AI - Content Script DOM Mutation Observer & Element Purger
  * Synchronously intercepts any .ai domain or standalone AI platform,
- * and purges embedded AI Overviews, widgets, and chatbots on regular sites.
+ * and dynamically hunts and purges internal AI tools, AI agents, search overviews,
+ * and floating chatbots across ANY website.
  */
 
 (function () {
@@ -45,15 +46,13 @@
   }
 
   // =========================================================================
-  // IMMEDIATE GUARD: If browsing any .ai or AI platform, blank page & redirect
+  // IMMEDIATE GUARD: If browsing any .ai or standalone AI platform, redirect
   // =========================================================================
   if (isAiPlatform(currentHost)) {
-    // 1. Instantly blank page to prevent ANY rendering or flash of content
     if (document.documentElement) {
       document.documentElement.style.display = 'none';
     }
 
-    // 2. Check storage directly
     chrome.storage.local.get(['masterEnabled', 'whitelistedDomains'], (data) => {
       const isMaster = data.masterEnabled ?? true;
       const whitelist = data.whitelistedDomains || [];
@@ -64,18 +63,17 @@
       if (isMaster && !isAllowed) {
         window.location.replace(chrome.runtime.getURL('blocked/blocked.html'));
       } else {
-        // If whitelisted or blocker disabled, restore display
         if (document.documentElement) {
           document.documentElement.style.display = '';
         }
       }
     });
 
-    return; // Stop further execution on AI site
+    return; // Stop further execution on AI platform
   }
 
   // =========================================================================
-  // REGULAR WEBSITES: Purge embedded AI widgets (Search, Social, Chatbots)
+  // REGULAR WEBSITES: Purge own built-in AI tools, AI agents, and overviews
   // =========================================================================
   let isEnabled = true;
   let isWhitelisted = false;
@@ -83,8 +81,62 @@
   let blockedCount = 0;
   let reportTimer = null;
 
+  // Regex matching AI tool/agent titles, labels, or button text
+  const AI_TEXT_REGEX = /\b(ask\s*ai|ai\s*agent|ai\s*assistant|ai\s*copilot|chat\s*with\s*ai|write\s*with\s*ai|summarize\s*with\s*ai|rewrite\s*with\s*ai|generate\s*with\s*ai|ai\s*helper|ai\s*summary|ask\s*copilot|notion\s*ai|atlassian\s*intelligence|magic\s*write|sidekick\s*ai)\b/i;
+
+  // Structural selectors
   const AI_SELECTORS = [
-    // 1. Google Search AI Overviews & Gemini
+    // Generic AI agent & tool selectors on ANY site
+    '[id*="ai-agent" i]',
+    '[class*="ai-agent" i]',
+    '[id*="ai-assistant" i]',
+    '[class*="ai-assistant" i]',
+    '[id*="ai-copilot" i]',
+    '[class*="ai-copilot" i]',
+    '[id*="ai-helper" i]',
+    '[class*="ai-helper" i]',
+    '[id*="ai-sidebar" i]',
+    '[class*="ai-sidebar" i]',
+    '[id*="ai-drawer" i]',
+    '[class*="ai-drawer" i]',
+    '[id*="ai-writer" i]',
+    '[class*="ai-writer" i]',
+    '[id*="ai-summary" i]',
+    '[class*="ai-summary" i]',
+    '[id*="ai-widget" i]',
+    '[class*="ai-widget" i]',
+    '[id*="ai-chat" i]',
+    '[class*="ai-chat" i]',
+    '[id*="ai-bot" i]',
+    '[class*="ai-bot" i]',
+    '[id*="ai-bubble" i]',
+    '[class*="ai-bubble" i]',
+    '[data-testid*="ai-agent" i]',
+    '[data-testid*="ai-assistant" i]',
+    '[data-testid*="ai-copilot" i]',
+    '[aria-label*="Ask AI" i]',
+    '[aria-label*="AI Assistant" i]',
+    '[aria-label*="AI Agent" i]',
+    '[aria-label*="AI Copilot" i]',
+    '[aria-label*="Write with AI" i]',
+    '[aria-label*="Generate with AI" i]',
+    '[aria-label*="Summarize with AI" i]',
+    '[title*="Ask AI" i]',
+    '[title*="AI Assistant" i]',
+    '[title*="AI Agent" i]',
+
+    // Notion, Atlassian, Canva, Figma, Shopify, Hubspot AI
+    '.notion-ai-button',
+    '[data-testid*="atlassian-intelligence"]',
+    '[data-testid*="rovo"]',
+    '[data-testid*="magic-ai"]',
+    '[aria-label*="Magic Write" i]',
+    '[data-testid*="ai-actions"]',
+    '[data-testid*="sidekick"]',
+    '[data-test-id*="breeze-ai"]',
+    '.jetpack-ai-assistant',
+
+    // Google Search AI Overviews
     'div#mfe-c',
     'div.x54gtf',
     'div.ULSxyf:has([data-async-context*="ai_overview"])',
@@ -95,74 +147,40 @@
     'div.Yz2fe',
     'div:has(> [data-mc-name="AI Overview"])',
     'div#botstuff div:has(> [data-async-context*="ai_overview"])',
-    'div[data-g-id*="gemini"]',
-    'div:has(> a[href*="gemini.google.com"])',
     'button[aria-label*="Ask Gemini" i]',
-    'div[data-component="ai-overview"]',
-    'div.MjjYud:has([data-attrid="ai_overview"])',
 
-    // 2. Bing & Microsoft Copilot
+    // Bing Copilot
     '#b_copilot',
     '.b_ans_copilot',
     '.cib-serp-main',
     '#copilot_app',
-    'div[id*="copilot"]',
-    'div[class*="copilot"]',
-    'div[data-priority="1"]:has(cib-serp)',
-    '.b_ans:has(cib-serp)',
     'cib-serp',
 
-    // 3. Twitter / X - Grok
+    // Social Media AI
     'a[aria-label="Grok" i]',
     'a[href="/i/grok"]',
     '[data-testid="GrokDrawer"]',
     'div[data-testid="grok-pill"]',
-    'div[data-testid="grok-button"]',
-    'div:has(> a[href="/i/grok"])',
-
-    // 4. LinkedIn - AI Inlines
     'button[aria-label*="AI" i]',
     'div.feed-shared-update-v2__ai-summary',
-    'div.update-components-ai-summary',
-    '.artdeco-button:has(svg[data-test-icon*="sparkle"])',
-    'button.ai-editor-assistant-btn',
-    'div[data-control-name="ai_assistant"]',
-
-    // 5. YouTube - AI Summaries & Ask Button
     'ytd-ai-summary-renderer',
-    'ytd-rich-shelf-renderer:has([aria-label*="AI" i])',
-    'button[aria-label*="Ask" i]:has(svg)',
-    '#ai-summary',
-
-    // 6. Reddit - AI Answers
     'shreddit-ai-overview',
-    'div[data-testid*="ai-summary"]',
-    'div[id*="ai-answer"]',
-    'faceplate-tracker[source="ai_summary"]',
-
-    // 7. GitHub - Copilot Chat Inlines
     'copilot-chat-button',
     '[data-component="copilot-chat"]',
-    '.copilot-summary',
 
-    // 8. Floating AI Chatbots & Customer Assistants
+    // Embedded Chatbots
     '#intercom-container',
     'iframe#intercom-frame',
     '#drift-widget',
-    'iframe[id*="drift"]',
     '#tidio-chat',
-    'iframe[id*="tidio"]',
     'div#chatbase-bubble-window',
     'iframe[src*="chatbase.co"]',
     'iframe[src*="voiceflow.com"]',
     'div#voiceflow-chat',
     'div#dante-widget',
-    'iframe[src*="dante-ai.com"]',
     'div#chatling-widget',
-    'iframe[src*="chatling.ai"]',
-    'div[id*="ai-chat-bubble" i]',
-    'div[class*="ai-chatbot" i]',
-    'iframe[src*="kapa.ai"]'
+    'iframe[src*="kapa.ai"]',
+    'div[id*="inkeep"]'
   ];
 
   const SELECTOR_STRING = AI_SELECTORS.join(',\n');
@@ -201,22 +219,56 @@
     }
   }
 
+  /**
+   * Block an AI element cleanly
+   */
+  function blockElement(el) {
+    if (el.hasAttribute('data-zero-ai-blocked')) return false;
+    el.setAttribute('data-zero-ai-blocked', 'true');
+    try {
+      el.remove();
+    } catch (e) {
+      el.style.display = 'none';
+      el.style.visibility = 'hidden';
+      el.style.pointerEvents = 'none';
+    }
+    return true;
+  }
+
+  /**
+   * Scans DOM using both structural selectors and dynamic text/label heuristics
+   */
   function purgeDOM(root = document) {
     if (!isEnabled || isWhitelisted) return;
 
     let count = 0;
+    const targetRoot = root === document ? document : root;
+
+    // 1. Selector-based purge
     try {
-      const targets = (root === document ? document : root).querySelectorAll(SELECTOR_STRING);
-      for (const el of targets) {
-        if (!el.hasAttribute('data-zero-ai-blocked')) {
-          el.setAttribute('data-zero-ai-blocked', 'true');
-          try {
-            el.remove();
-          } catch (err) {
-            el.style.display = 'none';
-            el.style.visibility = 'hidden';
-          }
-          count++;
+      const elements = targetRoot.querySelectorAll(SELECTOR_STRING);
+      for (const el of elements) {
+        if (blockElement(el)) count++;
+      }
+    } catch (e) {}
+
+    // 2. Dynamic Heuristic Purge for own AI tools/agents across ANY website
+    try {
+      // Check interactive triggers: buttons, links, floating action bars, summary pills
+      const candidates = targetRoot.querySelectorAll('button, a, summary, [role="button"], [class*="sparkle" i], [class*="bot" i], [class*="chat" i]');
+      for (const el of candidates) {
+        if (el.hasAttribute('data-zero-ai-blocked')) continue;
+
+        // Check text, aria-label, title, or dataset
+        const label = (
+          (el.getAttribute('aria-label') || '') + ' ' +
+          (el.getAttribute('title') || '') + ' ' +
+          (el.innerText || '')
+        ).trim();
+
+        if (label.length > 0 && label.length < 80 && AI_TEXT_REGEX.test(label)) {
+          // If candidate is a button inside a floating container or toolbar, remove candidate
+          if (blockElement(el)) count++;
         }
       }
     } catch (e) {}

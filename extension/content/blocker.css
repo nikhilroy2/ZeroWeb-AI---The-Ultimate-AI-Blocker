@@ -1,11 +1,126 @@
 /**
  * ZeroWeb AI - Instant CSS Element Blocker
  * Injected at document_start to instantly prevent Flash of Unstyled Content (FOUC)
- * for known AI widgets, search engine overviews, and social AI clutter.
+ * for AI tools, AI agents, search overviews, and embedded widgets across ANY website.
  */
 
 /* ==========================================================================
-   1. Google Search - AI Overview & Gemini Badges
+   1. Generic AI Tools & AI Agents across ANY website
+   ========================================================================== */
+[id*="ai-agent" i],
+[class*="ai-agent" i],
+[id*="ai-assistant" i],
+[class*="ai-assistant" i],
+[id*="ai-copilot" i],
+[class*="ai-copilot" i],
+[id*="ai-helper" i],
+[class*="ai-helper" i],
+[id*="ai-sidebar" i],
+[class*="ai-sidebar" i],
+[id*="ai-drawer" i],
+[class*="ai-drawer" i],
+[id*="ai-writer" i],
+[class*="ai-writer" i],
+[id*="ai-summary" i],
+[class*="ai-summary" i],
+[id*="ai-widget" i],
+[class*="ai-widget" i],
+[id*="ai-chat" i],
+[class*="ai-chat" i],
+[id*="ai-bot" i],
+[class*="ai-bot" i],
+[id*="ai-bubble" i],
+[class*="ai-bubble" i],
+[data-testid*="ai-agent" i],
+[data-testid*="ai-assistant" i],
+[data-testid*="ai-copilot" i],
+[data-testid*="ai-helper" i],
+[data-component*="ai-agent" i],
+[data-component*="ai-assistant" i],
+[aria-label*="Ask AI" i],
+[aria-label*="AI Assistant" i],
+[aria-label*="AI Agent" i],
+[aria-label*="AI Copilot" i],
+[aria-label*="AI Help" i],
+[aria-label*="Write with AI" i],
+[aria-label*="Generate with AI" i],
+[aria-label*="Summarize with AI" i],
+[aria-label*="Rewrite with AI" i],
+[title*="Ask AI" i],
+[title*="AI Assistant" i],
+[title*="AI Agent" i],
+[title*="AI Copilot" i],
+[title*="Write with AI" i],
+button:has(svg[data-icon*="sparkle" i]),
+button:has(svg[class*="sparkle" i]),
+button:has(svg[data-test-icon*="sparkle" i]),
+[data-testid*="sparkle-button" i] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* ==========================================================================
+   2. Popular Platforms' Own Built-In AI Tools & Agents
+   ========================================================================== */
+/* Notion AI */
+.notion-ai-button,
+[data-token-index*="ai"],
+div[aria-label*="Notion AI" i],
+
+/* Atlassian / Jira / Confluence (Atlassian Intelligence & Rovo Agent) */
+[data-testid*="atlassian-intelligence"],
+[aria-label*="Atlassian Intelligence" i],
+[data-testid*="rovo"],
+button:has([data-testid*="rovo"]),
+
+/* Canva Magic Studio & AI */
+[data-testid*="magic-ai"],
+[aria-label*="Magic Write" i],
+[aria-label*="Magic Studio" i],
+
+/* Figma AI Actions */
+[data-testid*="ai-actions"],
+[aria-label*="Figma AI" i],
+
+/* Salesforce Einstein */
+[class*="einstein" i],
+[id*="einstein" i],
+
+/* Hubspot Breeze AI */
+[data-test-id*="breeze-ai"],
+[class*="breeze-copilot"],
+
+/* Shopify Sidekick Assistant */
+[data-testid*="sidekick"],
+[id*="sidekick"],
+
+/* Slack & Discord AI */
+[data-qa*="ai-summary"],
+div[class*="aiSummary" i],
+
+/* WordPress / Jetpack AI */
+.jetpack-ai-assistant,
+[data-testid*="jetpack-ai"],
+
+/* Medium & Substack AI Audio / Assist */
+button[aria-label*="Listen to AI" i],
+div[class*="ai-audio" i] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+}
+
+/* ==========================================================================
+   3. Google Search - AI Overview & Gemini Badges
    ========================================================================== */
 div#mfe-c,
 div.x54gtf,
@@ -33,7 +148,7 @@ div.MjjYud:has([data-attrid="ai_overview"]) {
 }
 
 /* ==========================================================================
-   2. Microsoft Bing - Copilot Search Summaries & Sidebar
+   4. Microsoft Bing - Copilot Search Summaries & Sidebar
    ========================================================================== */
 #b_copilot,
 .b_ans_copilot,
@@ -56,7 +171,7 @@ div#b_header:has([aria-label*="Copilot" i]) .b_copilot_btn {
 }
 
 /* ==========================================================================
-   3. Twitter / X - Grok Sidebar, Buttons & AI Inlines
+   5. Twitter / X - Grok Sidebar, Buttons & AI Inlines
    ========================================================================== */
 a[aria-label="Grok" i],
 a[href="/i/grok"],
@@ -75,7 +190,7 @@ button[aria-label*="Grok" i] {
 }
 
 /* ==========================================================================
-   4. LinkedIn - AI Post Suggestions & "Write with AI"
+   6. LinkedIn - AI Post Suggestions & "Write with AI"
    ========================================================================== */
 button[aria-label*="AI" i],
 div.feed-shared-update-v2__ai-summary,
@@ -94,7 +209,7 @@ button[data-test-icon="sparkles"],
 }
 
 /* ==========================================================================
-   5. YouTube - AI Video Summaries & "Ask" Button
+   7. YouTube - AI Video Summaries & "Ask" Button
    ========================================================================== */
 ytd-ai-summary-renderer,
 ytd-rich-shelf-renderer:has([aria-label*="AI" i]),
@@ -111,7 +226,7 @@ yt-formatted-string:has(> span[aria-label*="AI summary" i]) {
 }
 
 /* ==========================================================================
-   6. Reddit - AI Answers & Overviews
+   8. Reddit - AI Answers & Overviews
    ========================================================================== */
 shreddit-ai-overview,
 div[data-testid*="ai-summary"],
@@ -127,7 +242,7 @@ reddit-ai-summary {
 }
 
 /* ==========================================================================
-   7. GitHub - Copilot Chat Buttons & Summaries
+   9. GitHub - Copilot Chat Buttons & Summaries
    ========================================================================== */
 copilot-chat-button,
 [data-component="copilot-chat"],
@@ -144,7 +259,7 @@ button[aria-label*="Copilot" i] {
 }
 
 /* ==========================================================================
-   8. Amazon - AI Customer Review Highlights
+   10. Amazon - AI Customer Review Highlights
    ========================================================================== */
 div[data-hook="ai-summary-card"],
 #cr-summarization-attributes,
@@ -159,7 +274,7 @@ div[data-testid="ai-generated-summary"] {
 }
 
 /* ==========================================================================
-   9. Floating AI Chatbots, Embeds & Support Agents
+   11. Embedded AI Chatbots, Agents & Support Overlays
    ========================================================================== */
 #intercom-container,
 iframe#intercom-frame,
@@ -180,7 +295,9 @@ iframe[src*="chatling.ai"],
 div[id*="ai-chat-bubble" i],
 div[class*="ai-chatbot" i],
 div[id*="kapa-widget"],
-iframe[src*="kapa.ai"] {
+iframe[src*="kapa.ai"],
+div[id*="inkeep"],
+iframe[src*="inkeep"] {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
@@ -190,7 +307,7 @@ iframe[src*="kapa.ai"] {
 }
 
 /* ==========================================================================
-   10. ZeroWeb AI Dynamic Block Tag
+   12. Universal Block Marker Tag
    ========================================================================== */
 [data-zero-ai-blocked="true"] {
   display: none !important;
@@ -200,4 +317,3 @@ iframe[src*="kapa.ai"] {
   max-height: 0 !important;
   overflow: hidden !important;
 }
-
