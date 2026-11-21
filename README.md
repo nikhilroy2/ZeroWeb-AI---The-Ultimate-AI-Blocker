@@ -83,3 +83,4 @@ The `website/` folder is completely standalone and ready for static hosting on G
 - **Landing Page**: `website/index.html` (includes interactive before/after AI blocker simulation)
 - **Privacy Policy**: `website/privacy.html` (fully compliant with Chrome Web Store Developer Program Policies)
 - **Terms of Service**: `website/terms.html`
+

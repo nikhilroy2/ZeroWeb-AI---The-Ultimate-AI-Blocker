@@ -404,3 +404,4 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Initialize
   loadState();
 });
+
