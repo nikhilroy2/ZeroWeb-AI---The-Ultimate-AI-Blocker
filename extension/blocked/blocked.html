@@ -12,17 +12,16 @@
       <img src="../assets/icons/icon128.png" alt="ZeroWeb AI Shield" class="shield-img">
     </div>
 
-    <span class="badge">Policy Enforcement Active</span>
+    <span class="badge">ZeroWeb AI Active</span>
     <h1 class="headline">AI Destination Blocked</h1>
     <p class="description">
-      ZeroWeb AI has blocked access to this platform to eliminate generative distractions, preserve human cognition, and protect your privacy.
+      ZeroWeb AI blocks all standalone generative AI platforms by default to protect your cognitive focus and prevent distractions.
     </p>
 
     <!-- Target Domain Card -->
     <div class="target-card">
-      <span class="target-label">Target Destination</span>
-      <span class="target-url" id="blockedTargetUrl">Loading destination...</span>
-      <div class="category-pill">Standalone Generative AI</div>
+      <span class="target-label">Blocked Domain</span>
+      <span class="target-url" id="blockedTargetUrl">Loading...</span>
     </div>
 
     <!-- Actions -->
@@ -30,21 +29,17 @@
       <button class="btn btn-primary" id="goBackBtn">
         ← Return to Safety
       </button>
-      <button class="btn btn-secondary" id="tempBypassBtn">
-        ⏱️ Allow for 10 Minutes
-      </button>
-      <button class="btn btn-outline" id="alwaysAllowBtn">
-        🛡️ Always Whitelist Domain
+      <button class="btn btn-secondary" id="allowSiteBtn">
+        🛡️ Allow This Website (Whitelist)
       </button>
     </div>
 
     <div class="blocked-footer">
-      <button class="link-btn" id="openSettingsBtn">⚙️ Manage Extension Settings</button>
-      <span class="footer-note">ZeroWeb AI Manifest V3 &bull; Local-only processing</span>
+      <button class="link-btn" id="openSettingsBtn">⚙️ Manage Allowed Sites &amp; Settings</button>
+      <span class="footer-note">ZeroWeb AI Manifest V3 &bull; All AI blocked by default</span>
     </div>
   </div>
 
   <script src="blocked.js"></script>
 </body>
 </html>
-

@@ -7,124 +7,51 @@
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-  <div class="popup-container">
+  <div class="popup-box">
     <!-- Header -->
-    <header class="popup-header">
+    <header class="header">
       <div class="brand">
-        <img src="../assets/icons/icon32.png" alt="ZeroWeb AI" class="brand-icon">
-        <div class="brand-text">
-          <span class="brand-name">ZeroWeb AI</span>
-          <span class="brand-version">v1.0.0</span>
-        </div>
+        <img src="../assets/icons/icon32.png" alt="ZeroWeb AI" class="logo">
+        <span class="brand-name">ZeroWeb AI</span>
       </div>
-      <div class="master-toggle-wrap">
-        <label class="switch" title="Toggle AI Blocker">
-          <input type="checkbox" id="masterToggle" checked>
-          <span class="slider round"></span>
-        </label>
-      </div>
+      <label class="switch" title="Toggle Master AI Shield">
+        <input type="checkbox" id="masterToggle" checked>
+        <span class="slider round"></span>
+      </label>
     </header>
 
-    <!-- Current Site Section -->
-    <section class="site-card">
-      <div class="site-info">
-        <span class="site-globe">🌐</span>
-        <div class="site-details">
-          <span class="site-domain" id="siteDomain">Current Page</span>
-          <span class="site-status-badge" id="siteStatus">Protected</span>
-        </div>
+    <!-- Main Domain Control Card -->
+    <main class="site-card">
+      <div class="site-header">
+        <span class="globe-icon">🌐</span>
+        <span class="domain-text" id="siteDomain">Current Page</span>
       </div>
-      <button class="site-toggle-btn" id="siteWhitelistBtn">
-        Whitelist Site
-      </button>
-    </section>
+      <div class="status-pill" id="siteStatusBadge">BLOCKING ALL AI</div>
 
-    <!-- Stats Card -->
-    <section class="stats-card">
-      <div class="stat-item primary">
-        <span class="stat-value" id="pageBlockedCount">0</span>
-        <span class="stat-label">Blocked on This Page</span>
+      <button class="action-btn" id="whitelistToggleBtn">
+        Allow AI on this site
+      </button>
+    </main>
+
+    <!-- Simple Stats -->
+    <footer class="stats-row">
+      <div class="stat-col">
+        <span class="stat-num" id="pageBlockedCount">0</span>
+        <span class="stat-lbl">Blocked on page</span>
       </div>
       <div class="stat-divider"></div>
-      <div class="stat-item">
-        <span class="stat-value" id="totalBlockedCount">0</span>
-        <span class="stat-label">Total AI Blocked</span>
+      <div class="stat-col">
+        <span class="stat-num" id="totalBlockedCount">0</span>
+        <span class="stat-lbl">Total blocked</span>
       </div>
-    </section>
-
-    <!-- Protection Categories -->
-    <section class="categories-section">
-      <span class="section-title">Protection Categories</span>
-
-      <div class="category-row">
-        <div class="category-info">
-          <span class="cat-icon">🧠</span>
-          <div class="cat-text">
-            <span class="cat-title">Standalone AI Sites</span>
-            <span class="cat-desc">ChatGPT, Claude, Gemini, DeepSeek</span>
-          </div>
-        </div>
-        <label class="switch mini">
-          <input type="checkbox" id="catStandalone" checked>
-          <span class="slider round"></span>
-        </label>
-      </div>
-
-      <div class="category-row">
-        <div class="category-info">
-          <span class="cat-icon">🔍</span>
-          <div class="cat-text">
-            <span class="cat-title">Search AI Overviews</span>
-            <span class="cat-desc">Google AI Overviews, Bing Copilot</span>
-          </div>
-        </div>
-        <label class="switch mini">
-          <input type="checkbox" id="catSearch" checked>
-          <span class="slider round"></span>
-        </label>
-      </div>
-
-      <div class="category-row">
-        <div class="category-info">
-          <span class="cat-icon">👥</span>
-          <div class="cat-text">
-            <span class="cat-title">Social Media AI</span>
-            <span class="cat-desc">X/Grok, LinkedIn AI, Reddit, YouTube</span>
-          </div>
-        </div>
-        <label class="switch mini">
-          <input type="checkbox" id="catSocial" checked>
-          <span class="slider round"></span>
-        </label>
-      </div>
-
-      <div class="category-row">
-        <div class="category-info">
-          <span class="cat-icon">💬</span>
-          <div class="cat-text">
-            <span class="cat-title">Embedded Chatbots</span>
-            <span class="cat-desc">Intercom, Drift, Tidio & Web Assistants</span>
-          </div>
-        </div>
-        <label class="switch mini">
-          <input type="checkbox" id="catChatbots" checked>
-          <span class="slider round"></span>
-        </label>
-      </div>
-    </section>
-
-    <!-- Quick Actions / Footer -->
-    <footer class="popup-footer">
-      <button class="footer-btn" id="pause15Btn" title="Pause protection for 15 minutes">
-        ⏱️ Pause 15m
-      </button>
-      <button class="footer-btn primary" id="openOptionsBtn" title="Open Dashboard & Custom Rules">
-        ⚙️ Settings & Rules
-      </button>
     </footer>
+
+    <!-- Settings Footer Link -->
+    <div class="settings-link-row">
+      <button class="settings-link" id="openSettingsBtn">⚙️ Manage Allowed Sites & Settings</button>
+    </div>
   </div>
 
   <script src="popup.js"></script>
 </body>
 </html>
-

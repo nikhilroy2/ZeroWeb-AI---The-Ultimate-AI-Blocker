@@ -1,38 +1,14 @@
 /**
  * ZeroWeb AI - Background Service Worker (Manifest V3)
- * Manages DeclarativeNetRequest rules, dynamic whitelists/blocklists,
- * state synchronization, tab badges, and event routing.
+ * Default: ALL AI domains and embedded AI tools are blocked out-of-the-box.
+ * Streamlined, zero-bloat state synchronization and dynamic whitelist management.
  */
 
 const DEFAULT_SETTINGS = {
-  masterEnabled: true,
-  categories: {
-    standalone: true,  // ChatGPT, Claude, Gemini, Perplexity, etc.
-    search: true,      // Google AI Overviews, Bing Copilot, etc.
-    social: true,      // X/Grok, LinkedIn AI, YouTube AI, Reddit AI
-    chatbots: true     // Floating web chatbots & AI assistants
-  },
-  whitelistedDomains: [],
-  customBlockedDomains: [],
-  customSelectors: [],
-  temporaryBypasses: {}, // { [domain]: expiryTimestamp }
-  stats: {
-    totalBlocked: 0,
-    todayBlocked: 0,
-    lastResetDate: new Date().toISOString().split('T')[0],
-    byCategory: {
-      standalone: 0,
-      search: 0,
-      social: 0,
-      chatbots: 0,
-      custom: 0
-    }
-  },
-  preferences: {
-    showBadge: true,
-    blockRedirectMode: 'blocked_page', // 'blocked_page' | 'silent_drop'
-    showNotification: false
-  }
+  masterEnabled: true,        // All AI blocked by default
+  whitelistedDomains: [],     // Websites explicitly allowed by user
+  showBlockedPage: true,      // Redirect to custom Access Blocked page
+  totalBlocked: 0             // Total elements/requests blocked
 };
 
 // In-memory tab tracking
@@ -40,21 +16,16 @@ const tabBlockedCounts = new Map();
 const lastAttemptedUrls = new Map();
 
 // Initialize on install / startup
-chrome.runtime.onInstalled.addListener(async (details) => {
+chrome.runtime.onInstalled.addListener(async () => {
   const current = await chrome.storage.local.get(null);
-  const initial = { ...DEFAULT_SETTINGS };
-
-  // Preserve existing keys if any
-  for (const key of Object.keys(initial)) {
-    if (current[key] === undefined) {
-      current[key] = initial[key];
-    }
-  }
-  await chrome.storage.local.set(current);
-  await syncRules(current);
-
-  // Set up periodic alarm for temporary bypass cleanup
-  chrome.alarms.create('cleanup_temp_bypasses', { periodInMinutes: 1 });
+  const settings = {
+    masterEnabled: current.masterEnabled ?? DEFAULT_SETTINGS.masterEnabled,
+    whitelistedDomains: current.whitelistedDomains ?? DEFAULT_SETTINGS.whitelistedDomains,
+    showBlockedPage: current.showBlockedPage ?? DEFAULT_SETTINGS.showBlockedPage,
+    totalBlocked: current.totalBlocked ?? DEFAULT_SETTINGS.totalBlocked
+  };
+  await chrome.storage.local.set(settings);
+  await syncRules(settings);
 });
 
 chrome.runtime.onStartup.addListener(async () => {
@@ -62,40 +33,14 @@ chrome.runtime.onStartup.addListener(async () => {
   await syncRules(data);
 });
 
-// Periodic alarm listener
-chrome.alarms.onAlarm.addListener(async (alarm) => {
-  if (alarm.name === 'cleanup_temp_bypasses') {
-    const data = await chrome.storage.local.get(['temporaryBypasses']);
-    const bypasses = data.temporaryBypasses || {};
-    const now = Date.now();
-    let changed = false;
-
-    for (const [domain, expiry] of Object.entries(bypasses)) {
-      if (expiry <= now) {
-        delete bypasses[domain];
-        changed = true;
-      }
-    }
-
-    if (changed) {
-      await chrome.storage.local.set({ temporaryBypasses: bypasses });
-      const fullData = await chrome.storage.local.get(null);
-      await syncRules(fullData);
-    }
-  }
-});
-
-// Track navigation attempts to record last blocked URL
+// Track navigations to capture destination domain for the blocked screen
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.url) {
-    if (changeInfo.url.startsWith(chrome.runtime.getURL('blocked/blocked.html'))) {
-      // Keep last url if already set
-    } else {
+    if (!changeInfo.url.startsWith(chrome.runtime.getURL('blocked/blocked.html'))) {
       lastAttemptedUrls.set(tabId, changeInfo.url);
     }
   }
   if (changeInfo.status === 'loading') {
-    // Reset tab blocked count on new navigation
     tabBlockedCounts.set(tabId, 0);
     updateBadge(tabId, 0);
   }
@@ -107,16 +52,15 @@ chrome.tabs.onRemoved.addListener((tabId) => {
 });
 
 /**
- * Synchronize static and dynamic DeclarativeNetRequest rules
+ * Synchronize static ruleset and dynamic whitelist rules
  */
 async function syncRules(settings) {
   try {
-    const masterEnabled = settings.masterEnabled ?? true;
-    const standaloneEnabled = settings.categories?.standalone ?? true;
-
-    // 1. Toggle Static Ruleset
+    const isMaster = settings.masterEnabled ?? true;
     const rulesetId = 'static_ai_rules';
-    if (!masterEnabled || !standaloneEnabled) {
+
+    // 1. Enable/Disable Static Rules (All AI domains blocked by default)
+    if (!isMaster) {
       await chrome.declarativeNetRequest.updateEnabledRulesets({
         disableRulesetIds: [rulesetId]
       });
@@ -133,21 +77,17 @@ async function syncRules(settings) {
     const addRules = [];
     let nextId = 10000;
 
-    // Whitelist rules (Priority 100 - overrides static & custom blocking)
-    const whitelisted = new Set([
-      ...(settings.whitelistedDomains || []),
-      ...Object.keys(settings.temporaryBypasses || {}).filter((d) => (settings.temporaryBypasses[d] || 0) > Date.now())
-    ]);
-
+    // 3. Whitelisted Domains (Priority 100: Overrides static blocking)
+    const whitelisted = settings.whitelistedDomains || [];
     for (const domain of whitelisted) {
-      const cleanDomain = domain.trim().toLowerCase();
-      if (!cleanDomain) continue;
+      const clean = domain.trim().toLowerCase();
+      if (!clean) continue;
       addRules.push({
         id: nextId++,
         priority: 100,
         action: { type: 'allow' },
         condition: {
-          urlFilter: `||${cleanDomain}`,
+          urlFilter: `||${clean}`,
           resourceTypes: [
             'main_frame',
             'sub_frame',
@@ -162,99 +102,33 @@ async function syncRules(settings) {
       });
     }
 
-    // Custom blocked domains (Priority 50)
-    if (masterEnabled && settings.customBlockedDomains?.length) {
-      const redirectMode = settings.preferences?.blockRedirectMode || 'blocked_page';
-      for (const domain of settings.customBlockedDomains) {
-        const cleanDomain = domain.trim().toLowerCase();
-        if (!cleanDomain) continue;
-
-        if (redirectMode === 'blocked_page') {
-          addRules.push({
-            id: nextId++,
-            priority: 50,
-            action: {
-              type: 'redirect',
-              redirect: { extensionPath: '/blocked/blocked.html' }
-            },
-            condition: {
-              urlFilter: `||${cleanDomain}`,
-              resourceTypes: ['main_frame']
-            }
-          });
-          addRules.push({
-            id: nextId++,
-            priority: 50,
-            action: { type: 'block' },
-            condition: {
-              urlFilter: `||${cleanDomain}`,
-              resourceTypes: [
-                'sub_frame',
-                'stylesheet',
-                'script',
-                'image',
-                'xmlhttprequest',
-                'websocket',
-                'other'
-              ]
-            }
-          });
-        } else {
-          addRules.push({
-            id: nextId++,
-            priority: 50,
-            action: { type: 'block' },
-            condition: {
-              urlFilter: `||${cleanDomain}`,
-              resourceTypes: [
-                'main_frame',
-                'sub_frame',
-                'stylesheet',
-                'script',
-                'image',
-                'xmlhttprequest',
-                'websocket',
-                'other'
-              ]
-            }
-          });
-        }
-      }
-    }
-
     await chrome.declarativeNetRequest.updateDynamicRules({
       removeRuleIds,
       addRules
     });
   } catch (err) {
-    console.error('[ZeroWeb AI] Error syncing rules:', err);
+    console.error('[ZeroWeb AI] Error updating rules:', err);
   }
 }
 
 /**
- * Updates extension action badge
+ * Update toolbar icon badge
  */
 async function updateBadge(tabId, count) {
   try {
-    const data = await chrome.storage.local.get(['masterEnabled', 'preferences']);
+    const data = await chrome.storage.local.get(['masterEnabled']);
     if (data.masterEnabled === false) {
       await chrome.action.setBadgeText({ text: 'OFF', tabId });
       await chrome.action.setBadgeBackgroundColor({ color: '#64748B', tabId });
       return;
     }
-
-    if (!data.preferences?.showBadge) {
-      await chrome.action.setBadgeText({ text: '', tabId });
-      return;
-    }
-
     const text = count && count > 0 ? (count > 99 ? '99+' : count.toString()) : '';
     await chrome.action.setBadgeText({ text, tabId });
     if (text) {
       await chrome.action.setBadgeBackgroundColor({ color: '#E11D48', tabId });
     }
   } catch (e) {
-    // Tab might be closed
+    // Tab closed
   }
 }
 
@@ -273,7 +147,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           tabCount = tabBlockedCounts.get(tabId) || 0;
         }
         sendResponse({
-          ...data,
+          masterEnabled: data.masterEnabled ?? true,
+          whitelistedDomains: data.whitelistedDomains || [],
+          showBlockedPage: data.showBlockedPage ?? true,
+          totalBlocked: data.totalBlocked || 0,
           currentTabBlocked: tabCount
         });
         break;
@@ -283,10 +160,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         const data = await chrome.storage.local.get(['masterEnabled']);
         const updated = !(data.masterEnabled ?? true);
         await chrome.storage.local.set({ masterEnabled: updated });
-        const allData = await chrome.storage.local.get(null);
-        await syncRules(allData);
+        const all = await chrome.storage.local.get(null);
+        await syncRules(all);
 
-        // Update all tab badges
+        // Update badges
         const tabs = await chrome.tabs.query({});
         for (const t of tabs) {
           const c = tabBlockedCounts.get(t.id) || 0;
@@ -297,124 +174,87 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         break;
       }
 
-      case 'TOGGLE_CATEGORY': {
-        const { category } = message;
-        const data = await chrome.storage.local.get(['categories']);
-        const cats = data.categories || { ...DEFAULT_SETTINGS.categories };
-        cats[category] = !cats[category];
-        await chrome.storage.local.set({ categories: cats });
-        const allData = await chrome.storage.local.get(null);
-        await syncRules(allData);
-        sendResponse({ success: true, categories: cats });
-        break;
-      }
-
-      case 'WHITELIST_DOMAIN': {
-        const { domain } = message;
+      case 'TOGGLE_WHITELIST': {
+        const domain = (message.domain || '').trim().toLowerCase();
         if (!domain) return sendResponse({ success: false });
+
         const data = await chrome.storage.local.get(['whitelistedDomains']);
-        const list = new Set(data.whitelistedDomains || []);
-        list.add(domain.toLowerCase().trim());
-        await chrome.storage.local.set({ whitelistedDomains: Array.from(list) });
-        const allData = await chrome.storage.local.get(null);
-        await syncRules(allData);
-        sendResponse({ success: true, whitelistedDomains: Array.from(list) });
+        let list = [...(data.whitelistedDomains || [])];
+
+        const index = list.indexOf(domain);
+        let nowWhitelisted = false;
+        if (index > -1) {
+          list.splice(index, 1);
+          nowWhitelisted = false;
+        } else {
+          list.push(domain);
+          nowWhitelisted = true;
+        }
+
+        await chrome.storage.local.set({ whitelistedDomains: list });
+        const all = await chrome.storage.local.get(null);
+        await syncRules(all);
+
+        sendResponse({ success: true, isWhitelisted: nowWhitelisted, whitelistedDomains: list });
         break;
       }
 
-      case 'REMOVE_WHITELIST': {
-        const { domain } = message;
+      case 'ADD_WHITELIST': {
+        const domain = (message.domain || '').trim().toLowerCase();
+        if (!domain) return sendResponse({ success: false });
+
         const data = await chrome.storage.local.get(['whitelistedDomains']);
-        const list = (data.whitelistedDomains || []).filter((d) => d !== domain.toLowerCase().trim());
+        const set = new Set(data.whitelistedDomains || []);
+        set.add(domain);
+        const list = Array.from(set);
+
         await chrome.storage.local.set({ whitelistedDomains: list });
-        const allData = await chrome.storage.local.get(null);
-        await syncRules(allData);
+        const all = await chrome.storage.local.get(null);
+        await syncRules(all);
+
         sendResponse({ success: true, whitelistedDomains: list });
         break;
       }
 
-      case 'TEMP_BYPASS': {
-        const { domain, minutes = 10 } = message;
-        if (!domain) return sendResponse({ success: false });
-        const data = await chrome.storage.local.get(['temporaryBypasses']);
-        const bypasses = data.temporaryBypasses || {};
-        bypasses[domain.toLowerCase().trim()] = Date.now() + minutes * 60 * 1000;
-        await chrome.storage.local.set({ temporaryBypasses: bypasses });
-        const allData = await chrome.storage.local.get(null);
-        await syncRules(allData);
-        sendResponse({ success: true, temporaryBypasses: bypasses });
+      case 'REMOVE_WHITELIST': {
+        const domain = (message.domain || '').trim().toLowerCase();
+        const data = await chrome.storage.local.get(['whitelistedDomains']);
+        const list = (data.whitelistedDomains || []).filter((d) => d !== domain);
+
+        await chrome.storage.local.set({ whitelistedDomains: list });
+        const all = await chrome.storage.local.get(null);
+        await syncRules(all);
+
+        sendResponse({ success: true, whitelistedDomains: list });
         break;
       }
 
-      case 'ADD_CUSTOM_DOMAIN': {
-        const { domain } = message;
-        if (!domain) return sendResponse({ success: false });
-        const data = await chrome.storage.local.get(['customBlockedDomains']);
-        const list = new Set(data.customBlockedDomains || []);
-        list.add(domain.toLowerCase().trim());
-        await chrome.storage.local.set({ customBlockedDomains: Array.from(list) });
-        const allData = await chrome.storage.local.get(null);
-        await syncRules(allData);
-        sendResponse({ success: true, customBlockedDomains: Array.from(list) });
-        break;
-      }
-
-      case 'REMOVE_CUSTOM_DOMAIN': {
-        const { domain } = message;
-        const data = await chrome.storage.local.get(['customBlockedDomains']);
-        const list = (data.customBlockedDomains || []).filter((d) => d !== domain.toLowerCase().trim());
-        await chrome.storage.local.set({ customBlockedDomains: list });
-        const allData = await chrome.storage.local.get(null);
-        await syncRules(allData);
-        sendResponse({ success: true, customBlockedDomains: list });
-        break;
-      }
-
-      case 'ADD_CUSTOM_SELECTOR': {
-        const { selector } = message;
-        if (!selector) return sendResponse({ success: false });
-        const data = await chrome.storage.local.get(['customSelectors']);
-        const list = new Set(data.customSelectors || []);
-        list.add(selector.trim());
-        await chrome.storage.local.set({ customSelectors: Array.from(list) });
-        sendResponse({ success: true, customSelectors: Array.from(list) });
-        break;
-      }
-
-      case 'REMOVE_CUSTOM_SELECTOR': {
-        const { selector } = message;
-        const data = await chrome.storage.local.get(['customSelectors']);
-        const list = (data.customSelectors || []).filter((s) => s !== selector.trim());
-        await chrome.storage.local.set({ customSelectors: list });
-        sendResponse({ success: true, customSelectors: list });
+      case 'TOGGLE_BLOCKED_PAGE': {
+        const data = await chrome.storage.local.get(['showBlockedPage']);
+        const updated = !(data.showBlockedPage ?? true);
+        await chrome.storage.local.set({ showBlockedPage: updated });
+        sendResponse({ success: true, showBlockedPage: updated });
         break;
       }
 
       case 'REPORT_BLOCKED': {
-        const { count = 1, category = 'custom' } = message;
+        const { count = 1 } = message;
         if (tabId) {
           const current = (tabBlockedCounts.get(tabId) || 0) + count;
           tabBlockedCounts.set(tabId, current);
           updateBadge(tabId, current);
         }
 
-        // Increment stats
-        const data = await chrome.storage.local.get(['stats']);
-        const stats = data.stats || { ...DEFAULT_SETTINGS.stats };
-        const today = new Date().toISOString().split('T')[0];
+        const data = await chrome.storage.local.get(['totalBlocked']);
+        const updatedTotal = (data.totalBlocked || 0) + count;
+        await chrome.storage.local.set({ totalBlocked: updatedTotal });
+        sendResponse({ success: true, totalBlocked: updatedTotal });
+        break;
+      }
 
-        if (stats.lastResetDate !== today) {
-          stats.todayBlocked = 0;
-          stats.lastResetDate = today;
-        }
-
-        stats.totalBlocked = (stats.totalBlocked || 0) + count;
-        stats.todayBlocked = (stats.todayBlocked || 0) + count;
-        stats.byCategory = stats.byCategory || {};
-        stats.byCategory[category] = (stats.byCategory[category] || 0) + count;
-
-        await chrome.storage.local.set({ stats });
-        sendResponse({ success: true, totalBlocked: stats.totalBlocked });
+      case 'RESET_STATS': {
+        await chrome.storage.local.set({ totalBlocked: 0 });
+        sendResponse({ success: true, totalBlocked: 0 });
         break;
       }
 
@@ -425,34 +265,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         break;
       }
 
-      case 'RESET_STATS': {
-        const stats = {
-          totalBlocked: 0,
-          todayBlocked: 0,
-          lastResetDate: new Date().toISOString().split('T')[0],
-          byCategory: { standalone: 0, search: 0, social: 0, chatbots: 0, custom: 0 }
-        };
-        await chrome.storage.local.set({ stats });
-        sendResponse({ success: true, stats });
-        break;
-      }
-
-      case 'UPDATE_PREFERENCES': {
-        const { preferences } = message;
-        const data = await chrome.storage.local.get(['preferences']);
-        const updated = { ...(data.preferences || {}), ...preferences };
-        await chrome.storage.local.set({ preferences: updated });
-        const allData = await chrome.storage.local.get(null);
-        await syncRules(allData);
-        sendResponse({ success: true, preferences: updated });
-        break;
-      }
-
       default:
-        sendResponse({ error: 'Unknown message type' });
+        sendResponse({ error: 'Unknown action' });
     }
   })();
 
-  return true; // Keep channel open for async response
+  return true;
 });
-

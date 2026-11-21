@@ -3,380 +3,89 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ZeroWeb AI - Settings & Dashboard</title>
+  <title>ZeroWeb AI - Settings</title>
   <link rel="stylesheet" href="options.css">
 </head>
 <body>
-  <div class="app-layout">
-    <!-- Sidebar Navigation -->
-    <aside class="sidebar">
-      <div class="sidebar-brand">
+  <div class="container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand">
         <img src="../assets/icons/icon48.png" alt="ZeroWeb AI" class="logo">
-        <div class="brand-text">
-          <h2>ZeroWeb AI</h2>
-          <span>Protection Control</span>
+        <div>
+          <h1>ZeroWeb AI Settings</h1>
+          <p class="subtitle">Default Mode: All AI websites, search overviews, and chatbots are blocked.</p>
         </div>
       </div>
-
-      <nav class="nav-menu">
-        <button class="nav-item active" data-tab="tab-dashboard">
-          <span class="icon">📊</span>
-          <span class="label">Overview</span>
-        </button>
-        <button class="nav-item" data-tab="tab-categories">
-          <span class="icon">🛡️</span>
-          <span class="label">Categories</span>
-        </button>
-        <button class="nav-item" data-tab="tab-blocklist">
-          <span class="icon">🚫</span>
-          <span class="label">Custom Blocklist</span>
-        </button>
-        <button class="nav-item" data-tab="tab-whitelist">
-          <span class="icon">✅</span>
-          <span class="label">Whitelist & Bypasses</span>
-        </button>
-        <button class="nav-item" data-tab="tab-preferences">
-          <span class="icon">⚙️</span>
-          <span class="label">Preferences</span>
-        </button>
-        <button class="nav-item" data-tab="tab-backup">
-          <span class="icon">💾</span>
-          <span class="label">Backup & Reset</span>
-        </button>
-      </nav>
-
-      <div class="sidebar-footer">
-        <div class="status-indicator-box">
-          <div class="status-dot active" id="sidebarStatusDot"></div>
-          <span id="sidebarStatusText">Shield Active</span>
-        </div>
-        <span class="version-label">v1.0.0 (Manifest V3)</span>
+      <div class="master-control">
+        <span class="master-label" id="masterStatusLabel">Shield Active</span>
+        <label class="switch">
+          <input type="checkbox" id="masterToggle" checked>
+          <span class="slider round"></span>
+        </label>
       </div>
-    </aside>
+    </header>
 
-    <!-- Main Content Area -->
-    <main class="main-content">
-      <!-- Top Bar -->
-      <header class="topbar">
-        <div class="topbar-title">
-          <h1 id="pageHeading">Overview & Analytics</h1>
-          <p id="pageSubheading">Real-time statistics and protection health</p>
+    <!-- Card 1: Whitelist / Allowed Sites -->
+    <section class="card">
+      <div class="card-header">
+        <h2>Allowed Websites (Exceptions)</h2>
+        <p class="card-desc">Websites listed here will not be blocked. Add any AI site you want to allow.</p>
+      </div>
+
+      <div class="input-row">
+        <input type="text" id="domainInput" placeholder="e.g. chatgpt.com, claude.ai, gemini.google.com" class="text-input">
+        <button class="btn btn-emerald" id="addDomainBtn">Allow Website</button>
+      </div>
+
+      <div class="whitelist-box" id="whitelistContainer">
+        <!-- Dynamically populated -->
+        <div class="empty-state">No websites allowed. ZeroWeb AI is actively blocking ALL AI sites by default.</div>
+      </div>
+    </section>
+
+    <!-- Card 2: Interception Screen -->
+    <section class="card">
+      <div class="card-header">
+        <h2>Block Page Behavior</h2>
+        <p class="card-desc">Control what happens when navigating directly to a blocked AI platform.</p>
+      </div>
+
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <strong>Show "Access Blocked" Screen</strong>
+          <span>Displays an informative block screen with a 1-click whitelist button instead of a silent browser network error.</span>
         </div>
-        <div class="topbar-actions">
-          <label class="master-switch-wrap">
-            <span class="switch-label">Master Protection:</span>
-            <label class="switch">
-              <input type="checkbox" id="optionsMasterToggle" checked>
-              <span class="slider round"></span>
-            </label>
-          </label>
+        <label class="switch">
+          <input type="checkbox" id="showBlockedPageToggle" checked>
+          <span class="slider round"></span>
+        </label>
+      </div>
+    </section>
+
+    <!-- Card 3: Interception Statistics -->
+    <section class="card">
+      <div class="card-header">
+        <h2>Interception Statistics</h2>
+        <p class="card-desc">Track how many AI scripts, network requests, and DOM widgets were blocked.</p>
+      </div>
+
+      <div class="stats-box">
+        <div class="stat-number-box">
+          <span class="stat-big" id="totalBlockedNum">0</span>
+          <span class="stat-text">Total AI Requests & Elements Blocked</span>
         </div>
-      </header>
+        <button class="btn btn-outline" id="resetStatsBtn">Reset Counter</button>
+      </div>
+    </section>
 
-      <!-- TAB 1: DASHBOARD -->
-      <section id="tab-dashboard" class="tab-pane active">
-        <!-- Stats Row -->
-        <div class="stats-grid">
-          <div class="stat-card">
-            <span class="stat-icon">⚡</span>
-            <div class="stat-meta">
-              <span class="stat-number" id="statTotalBlocked">0</span>
-              <span class="stat-title">Total AI Intercepted</span>
-            </div>
-          </div>
-          <div class="stat-card">
-            <span class="stat-icon">📅</span>
-            <div class="stat-meta">
-              <span class="stat-number" id="statTodayBlocked">0</span>
-              <span class="stat-title">Blocked Today</span>
-            </div>
-          </div>
-          <div class="stat-card">
-            <span class="stat-icon">🌐</span>
-            <div class="stat-meta">
-              <span class="stat-number" id="statCustomDomains">0</span>
-              <span class="stat-title">Custom Block Rules</span>
-            </div>
-          </div>
-          <div class="stat-card">
-            <span class="stat-icon">🛡️</span>
-            <div class="stat-meta">
-              <span class="stat-number" id="statWhitelisted">0</span>
-              <span class="stat-title">Whitelisted Sites</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Breakdown Section -->
-        <div class="card mt-24">
-          <div class="card-header">
-            <h3>Interception Breakdown by Category</h3>
-            <button class="btn-text" id="resetStatsBtn">Reset Statistics</button>
-          </div>
-          <div class="breakdown-list">
-            <div class="breakdown-item">
-              <div class="breakdown-info">
-                <span>🤖 Standalone Platforms (ChatGPT, Claude, etc.)</span>
-                <span class="count" id="countStandalone">0</span>
-              </div>
-              <div class="progress-bar"><div class="fill rose" id="barStandalone" style="width: 0%"></div></div>
-            </div>
-            <div class="breakdown-item">
-              <div class="breakdown-info">
-                <span>🔍 Search AI Overviews (Google, Bing Copilot)</span>
-                <span class="count" id="countSearch">0</span>
-              </div>
-              <div class="progress-bar"><div class="fill blue" id="barSearch" style="width: 0%"></div></div>
-            </div>
-            <div class="breakdown-item">
-              <div class="breakdown-info">
-                <span>👥 Social Media Inlines (X Grok, LinkedIn, Reddit)</span>
-                <span class="count" id="countSocial">0</span>
-              </div>
-              <div class="progress-bar"><div class="fill purple" id="barSocial" style="width: 0%"></div></div>
-            </div>
-            <div class="breakdown-item">
-              <div class="breakdown-info">
-                <span>💬 Embedded AI Chatbots & Floaters</span>
-                <span class="count" id="countChatbots">0</span>
-              </div>
-              <div class="progress-bar"><div class="fill emerald" id="barChatbots" style="width: 0%"></div></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- TAB 2: CATEGORIES -->
-      <section id="tab-categories" class="tab-pane">
-        <div class="card">
-          <div class="card-header">
-            <div>
-              <h3>Built-In Protection Categories</h3>
-              <p class="card-desc">Toggle granular filters for various AI surfaces across the web</p>
-            </div>
-          </div>
-
-          <div class="category-block">
-            <div class="cat-header">
-              <div class="cat-details">
-                <span class="cat-badge">Network Filter</span>
-                <h4>Standalone Generative AI Platforms</h4>
-                <p>Completely redirects and blocks full standalone AI chatbots and studio applications.</p>
-                <div class="tag-cloud">
-                  <span class="tag">ChatGPT</span>
-                  <span class="tag">Claude</span>
-                  <span class="tag">Google Gemini</span>
-                  <span class="tag">Microsoft Copilot</span>
-                  <span class="tag">Perplexity</span>
-                  <span class="tag">DeepSeek</span>
-                  <span class="tag">Mistral</span>
-                  <span class="tag">Midjourney</span>
-                  <span class="tag">Suno</span>
-                  <span class="tag">Runway</span>
-                </div>
-              </div>
-              <label class="switch">
-                <input type="checkbox" id="catStandaloneOpt" checked>
-                <span class="slider round"></span>
-              </label>
-            </div>
-          </div>
-
-          <div class="category-block">
-            <div class="cat-header">
-              <div class="cat-details">
-                <span class="cat-badge">DOM Purge</span>
-                <h4>Search Engine AI Overviews & Badges</h4>
-                <p>Instantly strips out Google AI Overview boxes and Bing Copilot SERP sidebars before render.</p>
-                <div class="tag-cloud">
-                  <span class="tag">Google AI Overview</span>
-                  <span class="tag">Google Gemini in Search</span>
-                  <span class="tag">Bing Copilot SERP</span>
-                  <span class="tag">Ask AI Prompts</span>
-                </div>
-              </div>
-              <label class="switch">
-                <input type="checkbox" id="catSearchOpt" checked>
-                <span class="slider round"></span>
-              </label>
-            </div>
-          </div>
-
-          <div class="category-block">
-            <div class="cat-header">
-              <div class="cat-details">
-                <span class="cat-badge">DOM Purge</span>
-                <h4>Social Media AI Inlines & Summaries</h4>
-                <p>Eradicates intrusive AI drawers, "Write with AI" helpers, and AI video summaries.</p>
-                <div class="tag-cloud">
-                  <span class="tag">X / Twitter Grok</span>
-                  <span class="tag">LinkedIn "Write with AI"</span>
-                  <span class="tag">YouTube AI Summary</span>
-                  <span class="tag">Reddit AI Answers</span>
-                  <span class="tag">GitHub Copilot Prompts</span>
-                </div>
-              </div>
-              <label class="switch">
-                <input type="checkbox" id="catSocialOpt" checked>
-                <span class="slider round"></span>
-              </label>
-            </div>
-          </div>
-
-          <div class="category-block">
-            <div class="cat-header">
-              <div class="cat-details">
-                <span class="cat-badge">DOM & Network</span>
-                <h4>Embedded AI Web Chatbots & Floating Assistants</h4>
-                <p>Hides irritating floating customer service AI chatbots and third-party AI bubbles.</p>
-                <div class="tag-cloud">
-                  <span class="tag">Intercom AI</span>
-                  <span class="tag">Drift AI</span>
-                  <span class="tag">Tidio Chatbot</span>
-                  <span class="tag">Chatbase</span>
-                  <span class="tag">Voiceflow</span>
-                  <span class="tag">Dante AI</span>
-                </div>
-              </div>
-              <label class="switch">
-                <input type="checkbox" id="catChatbotsOpt" checked>
-                <span class="slider round"></span>
-              </label>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- TAB 3: CUSTOM BLOCKLIST -->
-      <section id="tab-blocklist" class="tab-pane">
-        <div class="grid-2">
-          <!-- Custom Domains -->
-          <div class="card">
-            <div class="card-header">
-              <h3>Custom Blocked Domains</h3>
-              <p class="card-desc">Add custom domains to block via DeclarativeNetRequest</p>
-            </div>
-            <div class="input-group">
-              <input type="text" id="newCustomDomainInput" placeholder="e.g. unwanted-ai-portal.com" class="text-input">
-              <button class="btn btn-primary" id="addCustomDomainBtn">Block Domain</button>
-            </div>
-            <div class="rule-list" id="customDomainsList">
-              <div class="empty-state">No custom domains added yet.</div>
-            </div>
-          </div>
-
-          <!-- Custom CSS Selectors -->
-          <div class="card">
-            <div class="card-header">
-              <h3>Custom CSS Selectors</h3>
-              <p class="card-desc">Strip out custom AI elements or widgets anywhere on the web</p>
-            </div>
-            <div class="input-group">
-              <input type="text" id="newCustomSelectorInput" placeholder="e.g. .ai-summary-badge, #bot-window" class="text-input">
-              <button class="btn btn-primary" id="addCustomSelectorBtn">Add Selector</button>
-            </div>
-            <div class="rule-list" id="customSelectorsList">
-              <div class="empty-state">No custom CSS selectors added yet.</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- TAB 4: WHITELIST -->
-      <section id="tab-whitelist" class="tab-pane">
-        <div class="card">
-          <div class="card-header">
-            <div>
-              <h3>Permanent Whitelist</h3>
-              <p class="card-desc">Domains listed here will never be blocked or modified by ZeroWeb AI</p>
-            </div>
-          </div>
-          <div class="input-group">
-            <input type="text" id="newWhitelistInput" placeholder="e.g. company-internal-ai.com" class="text-input">
-            <button class="btn btn-emerald" id="addWhitelistBtn">Allow Domain</button>
-          </div>
-          <div class="rule-list mt-16" id="whitelistContainer">
-            <div class="empty-state">No domains whitelisted. ZeroWeb AI is actively protecting all visited sites.</div>
-          </div>
-        </div>
-
-        <div class="card mt-24">
-          <div class="card-header">
-            <div>
-              <h3>Active Temporary Bypasses</h3>
-              <p class="card-desc">Domains temporarily unblocked via popup or block screen</p>
-            </div>
-          </div>
-          <div class="rule-list" id="temporaryBypassesContainer">
-            <div class="empty-state">No temporary bypasses currently active.</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- TAB 5: PREFERENCES -->
-      <section id="tab-preferences" class="tab-pane">
-        <div class="card">
-          <div class="card-header">
-            <h3>Extension Behavior</h3>
-          </div>
-
-          <div class="pref-row">
-            <div class="pref-info">
-              <h4>Interception Action</h4>
-              <p>Choose what happens when a blocked standalone AI domain is navigated to</p>
-            </div>
-            <select id="prefRedirectMode" class="select-input">
-              <option value="blocked_page">Redirect to Custom "Access Blocked" Screen</option>
-              <option value="silent_drop">Silent Network Drop (ERR_BLOCKED_BY_CLIENT)</option>
-            </select>
-          </div>
-
-          <div class="pref-row">
-            <div class="pref-info">
-              <h4>Toolbar Counter Badge</h4>
-              <p>Display real-time blocked element count on the extension toolbar icon</p>
-            </div>
-            <label class="switch">
-              <input type="checkbox" id="prefShowBadge" checked>
-              <span class="slider round"></span>
-            </label>
-          </div>
-        </div>
-      </section>
-
-      <!-- TAB 6: BACKUP & RESET -->
-      <section id="tab-backup" class="tab-pane">
-        <div class="card">
-          <div class="card-header">
-            <h3>Backup & Synchronization</h3>
-            <p class="card-desc">Export your custom rules, whitelists, and preferences</p>
-          </div>
-          <div class="backup-actions">
-            <button class="btn btn-outline" id="exportBackupBtn">📥 Export Settings (JSON)</button>
-            <label class="btn btn-outline file-upload-btn">
-              📤 Import Settings (JSON)
-              <input type="file" id="importFileInput" accept=".json" style="display: none;">
-            </label>
-          </div>
-        </div>
-
-        <div class="card danger-card mt-24">
-          <div class="card-header">
-            <div>
-              <h3 class="danger-title">Danger Zone</h3>
-              <p class="card-desc">Irreversibly restore ZeroWeb AI to default factory state</p>
-            </div>
-            <button class="btn btn-danger" id="resetDefaultsBtn">Reset to Defaults</button>
-          </div>
-        </div>
-      </section>
-    </main>
+    <footer class="app-footer">
+      <span>ZeroWeb AI v1.0.0 &bull; Manifest V3 &bull; 100% Local &amp; Private</span>
+    </footer>
   </div>
 
-  <!-- Toast Notification Container -->
-  <div id="toastContainer" class="toast-container"></div>
+  <div id="toast" class="toast"></div>
 
   <script src="options.js"></script>
 </body>
 </html>
-

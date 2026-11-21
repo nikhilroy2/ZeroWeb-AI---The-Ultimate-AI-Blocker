@@ -4,20 +4,34 @@
     "priority": 1,
     "action": {
       "type": "redirect",
-      "redirect": { "extensionPath": "/blocked/blocked.html" }
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
     },
     "condition": {
       "urlFilter": "||chatgpt.com",
-      "resourceTypes": ["main_frame"]
+      "resourceTypes": [
+        "main_frame"
+      ]
     }
   },
   {
     "id": 2,
     "priority": 1,
-    "action": { "type": "block" },
+    "action": {
+      "type": "block"
+    },
     "condition": {
       "urlFilter": "||chatgpt.com",
-      "resourceTypes": ["sub_frame", "stylesheet", "script", "image", "xmlhttprequest", "websocket", "other"]
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
     }
   },
   {
@@ -25,20 +39,34 @@
     "priority": 1,
     "action": {
       "type": "redirect",
-      "redirect": { "extensionPath": "/blocked/blocked.html" }
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
     },
     "condition": {
       "urlFilter": "||chat.openai.com",
-      "resourceTypes": ["main_frame"]
+      "resourceTypes": [
+        "main_frame"
+      ]
     }
   },
   {
     "id": 4,
     "priority": 1,
-    "action": { "type": "block" },
+    "action": {
+      "type": "block"
+    },
     "condition": {
       "urlFilter": "||chat.openai.com",
-      "resourceTypes": ["sub_frame", "stylesheet", "script", "image", "xmlhttprequest", "websocket", "other"]
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
     }
   },
   {
@@ -46,20 +74,34 @@
     "priority": 1,
     "action": {
       "type": "redirect",
-      "redirect": { "extensionPath": "/blocked/blocked.html" }
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
     },
     "condition": {
-      "urlFilter": "||claude.ai",
-      "resourceTypes": ["main_frame"]
+      "urlFilter": "||openai.com",
+      "resourceTypes": [
+        "main_frame"
+      ]
     }
   },
   {
     "id": 6,
     "priority": 1,
-    "action": { "type": "block" },
+    "action": {
+      "type": "block"
+    },
     "condition": {
-      "urlFilter": "||claude.ai",
-      "resourceTypes": ["sub_frame", "stylesheet", "script", "image", "xmlhttprequest", "websocket", "other"]
+      "urlFilter": "||openai.com",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
     }
   },
   {
@@ -67,20 +109,34 @@
     "priority": 1,
     "action": {
       "type": "redirect",
-      "redirect": { "extensionPath": "/blocked/blocked.html" }
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
     },
     "condition": {
-      "urlFilter": "||gemini.google.com",
-      "resourceTypes": ["main_frame"]
+      "urlFilter": "||claude.ai",
+      "resourceTypes": [
+        "main_frame"
+      ]
     }
   },
   {
     "id": 8,
     "priority": 1,
-    "action": { "type": "block" },
+    "action": {
+      "type": "block"
+    },
     "condition": {
-      "urlFilter": "||gemini.google.com",
-      "resourceTypes": ["sub_frame", "stylesheet", "script", "image", "xmlhttprequest", "websocket", "other"]
+      "urlFilter": "||claude.ai",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
     }
   },
   {
@@ -88,20 +144,34 @@
     "priority": 1,
     "action": {
       "type": "redirect",
-      "redirect": { "extensionPath": "/blocked/blocked.html" }
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
     },
     "condition": {
-      "urlFilter": "||copilot.microsoft.com",
-      "resourceTypes": ["main_frame"]
+      "urlFilter": "||anthropic.com",
+      "resourceTypes": [
+        "main_frame"
+      ]
     }
   },
   {
     "id": 10,
     "priority": 1,
-    "action": { "type": "block" },
+    "action": {
+      "type": "block"
+    },
     "condition": {
-      "urlFilter": "||copilot.microsoft.com",
-      "resourceTypes": ["sub_frame", "stylesheet", "script", "image", "xmlhttprequest", "websocket", "other"]
+      "urlFilter": "||anthropic.com",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
     }
   },
   {
@@ -109,20 +179,34 @@
     "priority": 1,
     "action": {
       "type": "redirect",
-      "redirect": { "extensionPath": "/blocked/blocked.html" }
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
     },
     "condition": {
-      "urlFilter": "||perplexity.ai",
-      "resourceTypes": ["main_frame"]
+      "urlFilter": "||gemini.google.com",
+      "resourceTypes": [
+        "main_frame"
+      ]
     }
   },
   {
     "id": 12,
     "priority": 1,
-    "action": { "type": "block" },
+    "action": {
+      "type": "block"
+    },
     "condition": {
-      "urlFilter": "||perplexity.ai",
-      "resourceTypes": ["sub_frame", "stylesheet", "script", "image", "xmlhttprequest", "websocket", "other"]
+      "urlFilter": "||gemini.google.com",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
     }
   },
   {
@@ -130,20 +214,34 @@
     "priority": 1,
     "action": {
       "type": "redirect",
-      "redirect": { "extensionPath": "/blocked/blocked.html" }
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
     },
     "condition": {
-      "urlFilter": "||poe.com",
-      "resourceTypes": ["main_frame"]
+      "urlFilter": "||copilot.microsoft.com",
+      "resourceTypes": [
+        "main_frame"
+      ]
     }
   },
   {
     "id": 14,
     "priority": 1,
-    "action": { "type": "block" },
+    "action": {
+      "type": "block"
+    },
     "condition": {
-      "urlFilter": "||poe.com",
-      "resourceTypes": ["sub_frame", "stylesheet", "script", "image", "xmlhttprequest", "websocket", "other"]
+      "urlFilter": "||copilot.microsoft.com",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
     }
   },
   {
@@ -151,20 +249,34 @@
     "priority": 1,
     "action": {
       "type": "redirect",
-      "redirect": { "extensionPath": "/blocked/blocked.html" }
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
     },
     "condition": {
-      "urlFilter": "||chat.deepseek.com",
-      "resourceTypes": ["main_frame"]
+      "urlFilter": "||perplexity.ai",
+      "resourceTypes": [
+        "main_frame"
+      ]
     }
   },
   {
     "id": 16,
     "priority": 1,
-    "action": { "type": "block" },
+    "action": {
+      "type": "block"
+    },
     "condition": {
-      "urlFilter": "||chat.deepseek.com",
-      "resourceTypes": ["sub_frame", "stylesheet", "script", "image", "xmlhttprequest", "websocket", "other"]
+      "urlFilter": "||perplexity.ai",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
     }
   },
   {
@@ -172,20 +284,34 @@
     "priority": 1,
     "action": {
       "type": "redirect",
-      "redirect": { "extensionPath": "/blocked/blocked.html" }
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
     },
     "condition": {
-      "urlFilter": "||deepseek.com",
-      "resourceTypes": ["main_frame"]
+      "urlFilter": "||poe.com",
+      "resourceTypes": [
+        "main_frame"
+      ]
     }
   },
   {
     "id": 18,
     "priority": 1,
-    "action": { "type": "block" },
+    "action": {
+      "type": "block"
+    },
     "condition": {
-      "urlFilter": "||deepseek.com",
-      "resourceTypes": ["sub_frame", "stylesheet", "script", "image", "xmlhttprequest", "websocket", "other"]
+      "urlFilter": "||poe.com",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
     }
   },
   {
@@ -193,20 +319,34 @@
     "priority": 1,
     "action": {
       "type": "redirect",
-      "redirect": { "extensionPath": "/blocked/blocked.html" }
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
     },
     "condition": {
-      "urlFilter": "||chat.mistral.ai",
-      "resourceTypes": ["main_frame"]
+      "urlFilter": "||deepseek.com",
+      "resourceTypes": [
+        "main_frame"
+      ]
     }
   },
   {
     "id": 20,
     "priority": 1,
-    "action": { "type": "block" },
+    "action": {
+      "type": "block"
+    },
     "condition": {
-      "urlFilter": "||chat.mistral.ai",
-      "resourceTypes": ["sub_frame", "stylesheet", "script", "image", "xmlhttprequest", "websocket", "other"]
+      "urlFilter": "||deepseek.com",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
     }
   },
   {
@@ -214,20 +354,34 @@
     "priority": 1,
     "action": {
       "type": "redirect",
-      "redirect": { "extensionPath": "/blocked/blocked.html" }
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
     },
     "condition": {
-      "urlFilter": "||grok.com",
-      "resourceTypes": ["main_frame"]
+      "urlFilter": "||chat.deepseek.com",
+      "resourceTypes": [
+        "main_frame"
+      ]
     }
   },
   {
     "id": 22,
     "priority": 1,
-    "action": { "type": "block" },
+    "action": {
+      "type": "block"
+    },
     "condition": {
-      "urlFilter": "||grok.com",
-      "resourceTypes": ["sub_frame", "stylesheet", "script", "image", "xmlhttprequest", "websocket", "other"]
+      "urlFilter": "||chat.deepseek.com",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
     }
   },
   {
@@ -235,20 +389,34 @@
     "priority": 1,
     "action": {
       "type": "redirect",
-      "redirect": { "extensionPath": "/blocked/blocked.html" }
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
     },
     "condition": {
-      "urlFilter": "||character.ai",
-      "resourceTypes": ["main_frame"]
+      "urlFilter": "||mistral.ai",
+      "resourceTypes": [
+        "main_frame"
+      ]
     }
   },
   {
     "id": 24,
     "priority": 1,
-    "action": { "type": "block" },
+    "action": {
+      "type": "block"
+    },
     "condition": {
-      "urlFilter": "||character.ai",
-      "resourceTypes": ["sub_frame", "stylesheet", "script", "image", "xmlhttprequest", "websocket", "other"]
+      "urlFilter": "||mistral.ai",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
     }
   },
   {
@@ -256,20 +424,34 @@
     "priority": 1,
     "action": {
       "type": "redirect",
-      "redirect": { "extensionPath": "/blocked/blocked.html" }
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
     },
     "condition": {
-      "urlFilter": "||phind.com",
-      "resourceTypes": ["main_frame"]
+      "urlFilter": "||chat.mistral.ai",
+      "resourceTypes": [
+        "main_frame"
+      ]
     }
   },
   {
     "id": 26,
     "priority": 1,
-    "action": { "type": "block" },
+    "action": {
+      "type": "block"
+    },
     "condition": {
-      "urlFilter": "||phind.com",
-      "resourceTypes": ["sub_frame", "stylesheet", "script", "image", "xmlhttprequest", "websocket", "other"]
+      "urlFilter": "||chat.mistral.ai",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
     }
   },
   {
@@ -277,20 +459,34 @@
     "priority": 1,
     "action": {
       "type": "redirect",
-      "redirect": { "extensionPath": "/blocked/blocked.html" }
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
     },
     "condition": {
-      "urlFilter": "||you.com",
-      "resourceTypes": ["main_frame"]
+      "urlFilter": "||grok.com",
+      "resourceTypes": [
+        "main_frame"
+      ]
     }
   },
   {
     "id": 28,
     "priority": 1,
-    "action": { "type": "block" },
+    "action": {
+      "type": "block"
+    },
     "condition": {
-      "urlFilter": "||you.com",
-      "resourceTypes": ["sub_frame", "stylesheet", "script", "image", "xmlhttprequest", "websocket", "other"]
+      "urlFilter": "||grok.com",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
     }
   },
   {
@@ -298,20 +494,34 @@
     "priority": 1,
     "action": {
       "type": "redirect",
-      "redirect": { "extensionPath": "/blocked/blocked.html" }
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
     },
     "condition": {
-      "urlFilter": "||jasper.ai",
-      "resourceTypes": ["main_frame"]
+      "urlFilter": "||x.ai",
+      "resourceTypes": [
+        "main_frame"
+      ]
     }
   },
   {
     "id": 30,
     "priority": 1,
-    "action": { "type": "block" },
+    "action": {
+      "type": "block"
+    },
     "condition": {
-      "urlFilter": "||jasper.ai",
-      "resourceTypes": ["sub_frame", "stylesheet", "script", "image", "xmlhttprequest", "websocket", "other"]
+      "urlFilter": "||x.ai",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
     }
   },
   {
@@ -319,20 +529,34 @@
     "priority": 1,
     "action": {
       "type": "redirect",
-      "redirect": { "extensionPath": "/blocked/blocked.html" }
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
     },
     "condition": {
-      "urlFilter": "||copy.ai",
-      "resourceTypes": ["main_frame"]
+      "urlFilter": "||character.ai",
+      "resourceTypes": [
+        "main_frame"
+      ]
     }
   },
   {
     "id": 32,
     "priority": 1,
-    "action": { "type": "block" },
+    "action": {
+      "type": "block"
+    },
     "condition": {
-      "urlFilter": "||copy.ai",
-      "resourceTypes": ["sub_frame", "stylesheet", "script", "image", "xmlhttprequest", "websocket", "other"]
+      "urlFilter": "||character.ai",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
     }
   },
   {
@@ -340,20 +564,34 @@
     "priority": 1,
     "action": {
       "type": "redirect",
-      "redirect": { "extensionPath": "/blocked/blocked.html" }
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
     },
     "condition": {
-      "urlFilter": "||midjourney.com",
-      "resourceTypes": ["main_frame"]
+      "urlFilter": "||beta.character.ai",
+      "resourceTypes": [
+        "main_frame"
+      ]
     }
   },
   {
     "id": 34,
     "priority": 1,
-    "action": { "type": "block" },
+    "action": {
+      "type": "block"
+    },
     "condition": {
-      "urlFilter": "||midjourney.com",
-      "resourceTypes": ["sub_frame", "stylesheet", "script", "image", "xmlhttprequest", "websocket", "other"]
+      "urlFilter": "||beta.character.ai",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
     }
   },
   {
@@ -361,20 +599,34 @@
     "priority": 1,
     "action": {
       "type": "redirect",
-      "redirect": { "extensionPath": "/blocked/blocked.html" }
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
     },
     "condition": {
-      "urlFilter": "||suno.com",
-      "resourceTypes": ["main_frame"]
+      "urlFilter": "||phind.com",
+      "resourceTypes": [
+        "main_frame"
+      ]
     }
   },
   {
     "id": 36,
     "priority": 1,
-    "action": { "type": "block" },
+    "action": {
+      "type": "block"
+    },
     "condition": {
-      "urlFilter": "||suno.com",
-      "resourceTypes": ["sub_frame", "stylesheet", "script", "image", "xmlhttprequest", "websocket", "other"]
+      "urlFilter": "||phind.com",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
     }
   },
   {
@@ -382,20 +634,34 @@
     "priority": 1,
     "action": {
       "type": "redirect",
-      "redirect": { "extensionPath": "/blocked/blocked.html" }
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
     },
     "condition": {
-      "urlFilter": "||udio.com",
-      "resourceTypes": ["main_frame"]
+      "urlFilter": "||you.com",
+      "resourceTypes": [
+        "main_frame"
+      ]
     }
   },
   {
     "id": 38,
     "priority": 1,
-    "action": { "type": "block" },
+    "action": {
+      "type": "block"
+    },
     "condition": {
-      "urlFilter": "||udio.com",
-      "resourceTypes": ["sub_frame", "stylesheet", "script", "image", "xmlhttprequest", "websocket", "other"]
+      "urlFilter": "||you.com",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
     }
   },
   {
@@ -403,20 +669,34 @@
     "priority": 1,
     "action": {
       "type": "redirect",
-      "redirect": { "extensionPath": "/blocked/blocked.html" }
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
     },
     "condition": {
-      "urlFilter": "||runwayml.com",
-      "resourceTypes": ["main_frame"]
+      "urlFilter": "||jasper.ai",
+      "resourceTypes": [
+        "main_frame"
+      ]
     }
   },
   {
     "id": 40,
     "priority": 1,
-    "action": { "type": "block" },
+    "action": {
+      "type": "block"
+    },
     "condition": {
-      "urlFilter": "||runwayml.com",
-      "resourceTypes": ["sub_frame", "stylesheet", "script", "image", "xmlhttprequest", "websocket", "other"]
+      "urlFilter": "||jasper.ai",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
     }
   },
   {
@@ -424,20 +704,34 @@
     "priority": 1,
     "action": {
       "type": "redirect",
-      "redirect": { "extensionPath": "/blocked/blocked.html" }
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
     },
     "condition": {
-      "urlFilter": "||elevenlabs.io",
-      "resourceTypes": ["main_frame"]
+      "urlFilter": "||copy.ai",
+      "resourceTypes": [
+        "main_frame"
+      ]
     }
   },
   {
     "id": 42,
     "priority": 1,
-    "action": { "type": "block" },
+    "action": {
+      "type": "block"
+    },
     "condition": {
-      "urlFilter": "||elevenlabs.io",
-      "resourceTypes": ["sub_frame", "stylesheet", "script", "image", "xmlhttprequest", "websocket", "other"]
+      "urlFilter": "||copy.ai",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
     }
   },
   {
@@ -445,20 +739,34 @@
     "priority": 1,
     "action": {
       "type": "redirect",
-      "redirect": { "extensionPath": "/blocked/blocked.html" }
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
     },
     "condition": {
-      "urlFilter": "||pi.ai",
-      "resourceTypes": ["main_frame"]
+      "urlFilter": "||midjourney.com",
+      "resourceTypes": [
+        "main_frame"
+      ]
     }
   },
   {
     "id": 44,
     "priority": 1,
-    "action": { "type": "block" },
+    "action": {
+      "type": "block"
+    },
     "condition": {
-      "urlFilter": "||pi.ai",
-      "resourceTypes": ["sub_frame", "stylesheet", "script", "image", "xmlhttprequest", "websocket", "other"]
+      "urlFilter": "||midjourney.com",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
     }
   },
   {
@@ -466,20 +774,34 @@
     "priority": 1,
     "action": {
       "type": "redirect",
-      "redirect": { "extensionPath": "/blocked/blocked.html" }
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
     },
     "condition": {
-      "urlFilter": "||meta.ai",
-      "resourceTypes": ["main_frame"]
+      "urlFilter": "||suno.com",
+      "resourceTypes": [
+        "main_frame"
+      ]
     }
   },
   {
     "id": 46,
     "priority": 1,
-    "action": { "type": "block" },
+    "action": {
+      "type": "block"
+    },
     "condition": {
-      "urlFilter": "||meta.ai",
-      "resourceTypes": ["sub_frame", "stylesheet", "script", "image", "xmlhttprequest", "websocket", "other"]
+      "urlFilter": "||suno.com",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
     }
   },
   {
@@ -487,20 +809,34 @@
     "priority": 1,
     "action": {
       "type": "redirect",
-      "redirect": { "extensionPath": "/blocked/blocked.html" }
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
     },
     "condition": {
-      "urlFilter": "||blackbox.ai",
-      "resourceTypes": ["main_frame"]
+      "urlFilter": "||suno.ai",
+      "resourceTypes": [
+        "main_frame"
+      ]
     }
   },
   {
     "id": 48,
     "priority": 1,
-    "action": { "type": "block" },
+    "action": {
+      "type": "block"
+    },
     "condition": {
-      "urlFilter": "||blackbox.ai",
-      "resourceTypes": ["sub_frame", "stylesheet", "script", "image", "xmlhttprequest", "websocket", "other"]
+      "urlFilter": "||suno.ai",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
     }
   },
   {
@@ -508,21 +844,629 @@
     "priority": 1,
     "action": {
       "type": "redirect",
-      "redirect": { "extensionPath": "/blocked/blocked.html" }
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
     },
     "condition": {
-      "urlFilter": "||v0.dev",
-      "resourceTypes": ["main_frame"]
+      "urlFilter": "||udio.com",
+      "resourceTypes": [
+        "main_frame"
+      ]
     }
   },
   {
     "id": 50,
     "priority": 1,
-    "action": { "type": "block" },
+    "action": {
+      "type": "block"
+    },
+    "condition": {
+      "urlFilter": "||udio.com",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
+    }
+  },
+  {
+    "id": 51,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
+    },
+    "condition": {
+      "urlFilter": "||runwayml.com",
+      "resourceTypes": [
+        "main_frame"
+      ]
+    }
+  },
+  {
+    "id": 52,
+    "priority": 1,
+    "action": {
+      "type": "block"
+    },
+    "condition": {
+      "urlFilter": "||runwayml.com",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
+    }
+  },
+  {
+    "id": 53,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
+    },
+    "condition": {
+      "urlFilter": "||runway.com",
+      "resourceTypes": [
+        "main_frame"
+      ]
+    }
+  },
+  {
+    "id": 54,
+    "priority": 1,
+    "action": {
+      "type": "block"
+    },
+    "condition": {
+      "urlFilter": "||runway.com",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
+    }
+  },
+  {
+    "id": 55,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
+    },
+    "condition": {
+      "urlFilter": "||elevenlabs.io",
+      "resourceTypes": [
+        "main_frame"
+      ]
+    }
+  },
+  {
+    "id": 56,
+    "priority": 1,
+    "action": {
+      "type": "block"
+    },
+    "condition": {
+      "urlFilter": "||elevenlabs.io",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
+    }
+  },
+  {
+    "id": 57,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
+    },
+    "condition": {
+      "urlFilter": "||pi.ai",
+      "resourceTypes": [
+        "main_frame"
+      ]
+    }
+  },
+  {
+    "id": 58,
+    "priority": 1,
+    "action": {
+      "type": "block"
+    },
+    "condition": {
+      "urlFilter": "||pi.ai",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
+    }
+  },
+  {
+    "id": 59,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
+    },
+    "condition": {
+      "urlFilter": "||meta.ai",
+      "resourceTypes": [
+        "main_frame"
+      ]
+    }
+  },
+  {
+    "id": 60,
+    "priority": 1,
+    "action": {
+      "type": "block"
+    },
+    "condition": {
+      "urlFilter": "||meta.ai",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
+    }
+  },
+  {
+    "id": 61,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
+    },
+    "condition": {
+      "urlFilter": "||imagine.meta.com",
+      "resourceTypes": [
+        "main_frame"
+      ]
+    }
+  },
+  {
+    "id": 62,
+    "priority": 1,
+    "action": {
+      "type": "block"
+    },
+    "condition": {
+      "urlFilter": "||imagine.meta.com",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
+    }
+  },
+  {
+    "id": 63,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
+    },
+    "condition": {
+      "urlFilter": "||blackbox.ai",
+      "resourceTypes": [
+        "main_frame"
+      ]
+    }
+  },
+  {
+    "id": 64,
+    "priority": 1,
+    "action": {
+      "type": "block"
+    },
+    "condition": {
+      "urlFilter": "||blackbox.ai",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
+    }
+  },
+  {
+    "id": 65,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
+    },
     "condition": {
       "urlFilter": "||v0.dev",
-      "resourceTypes": ["sub_frame", "stylesheet", "script", "image", "xmlhttprequest", "websocket", "other"]
+      "resourceTypes": [
+        "main_frame"
+      ]
+    }
+  },
+  {
+    "id": 66,
+    "priority": 1,
+    "action": {
+      "type": "block"
+    },
+    "condition": {
+      "urlFilter": "||v0.dev",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
+    }
+  },
+  {
+    "id": 67,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
+    },
+    "condition": {
+      "urlFilter": "||leonardo.ai",
+      "resourceTypes": [
+        "main_frame"
+      ]
+    }
+  },
+  {
+    "id": 68,
+    "priority": 1,
+    "action": {
+      "type": "block"
+    },
+    "condition": {
+      "urlFilter": "||leonardo.ai",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
+    }
+  },
+  {
+    "id": 69,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
+    },
+    "condition": {
+      "urlFilter": "||civitai.com",
+      "resourceTypes": [
+        "main_frame"
+      ]
+    }
+  },
+  {
+    "id": 70,
+    "priority": 1,
+    "action": {
+      "type": "block"
+    },
+    "condition": {
+      "urlFilter": "||civitai.com",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
+    }
+  },
+  {
+    "id": 71,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
+    },
+    "condition": {
+      "urlFilter": "||janitorai.com",
+      "resourceTypes": [
+        "main_frame"
+      ]
+    }
+  },
+  {
+    "id": 72,
+    "priority": 1,
+    "action": {
+      "type": "block"
+    },
+    "condition": {
+      "urlFilter": "||janitorai.com",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
+    }
+  },
+  {
+    "id": 73,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
+    },
+    "condition": {
+      "urlFilter": "||crushon.ai",
+      "resourceTypes": [
+        "main_frame"
+      ]
+    }
+  },
+  {
+    "id": 74,
+    "priority": 1,
+    "action": {
+      "type": "block"
+    },
+    "condition": {
+      "urlFilter": "||crushon.ai",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
+    }
+  },
+  {
+    "id": 75,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
+    },
+    "condition": {
+      "urlFilter": "||klingai.com",
+      "resourceTypes": [
+        "main_frame"
+      ]
+    }
+  },
+  {
+    "id": 76,
+    "priority": 1,
+    "action": {
+      "type": "block"
+    },
+    "condition": {
+      "urlFilter": "||klingai.com",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
+    }
+  },
+  {
+    "id": 77,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
+    },
+    "condition": {
+      "urlFilter": "||luma.ai",
+      "resourceTypes": [
+        "main_frame"
+      ]
+    }
+  },
+  {
+    "id": 78,
+    "priority": 1,
+    "action": {
+      "type": "block"
+    },
+    "condition": {
+      "urlFilter": "||luma.ai",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
+    }
+  },
+  {
+    "id": 79,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
+    },
+    "condition": {
+      "urlFilter": "||pika.art",
+      "resourceTypes": [
+        "main_frame"
+      ]
+    }
+  },
+  {
+    "id": 80,
+    "priority": 1,
+    "action": {
+      "type": "block"
+    },
+    "condition": {
+      "urlFilter": "||pika.art",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
+    }
+  },
+  {
+    "id": 81,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
+    },
+    "condition": {
+      "urlFilter": "||ideogram.ai",
+      "resourceTypes": [
+        "main_frame"
+      ]
+    }
+  },
+  {
+    "id": 82,
+    "priority": 1,
+    "action": {
+      "type": "block"
+    },
+    "condition": {
+      "urlFilter": "||ideogram.ai",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
+    }
+  },
+  {
+    "id": 83,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "extensionPath": "/blocked/blocked.html"
+      }
+    },
+    "condition": {
+      "urlFilter": "||monica.im",
+      "resourceTypes": [
+        "main_frame"
+      ]
+    }
+  },
+  {
+    "id": 84,
+    "priority": 1,
+    "action": {
+      "type": "block"
+    },
+    "condition": {
+      "urlFilter": "||monica.im",
+      "resourceTypes": [
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "xmlhttprequest",
+        "websocket",
+        "other"
+      ]
     }
   }
 ]
-
