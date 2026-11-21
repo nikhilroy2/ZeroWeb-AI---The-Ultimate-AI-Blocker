@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ZeroWeb AI - The Ultimate AI Blocker Chrome Extension</title>
-  <meta name="description" content="Block standalone generative AI platforms, search engine AI overviews, embedded chatbots, and AI clutter with native Manifest V3 speed. Reclaim a human web.">
+  <title>ZeroWeb AI — Block All AI. Pure Web.</title>
+  <meta name="description" content="Block standalone AI platforms, search engine AI overviews, and embedded chatbots with native Manifest V3 speed.">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -13,7 +13,7 @@
   <header class="site-header">
     <div class="container nav-wrap">
       <a href="index.html" class="brand">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="36" height="36" class="brand-logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="40" height="40" class="brand-logo">
           <circle cx="64" cy="64" r="56" fill="#0F172A" stroke="#E11D48" stroke-width="4" />
           <circle cx="64" cy="64" r="34" fill="none" stroke="#F43F5E" stroke-width="8" />
           <line x1="38" y1="38" x2="90" y2="90" stroke="#E11D48" stroke-width="8" stroke-linecap="round" />
@@ -25,250 +25,123 @@
       <nav class="nav-links">
         <a href="#features">Features</a>
         <a href="#demo">Live Demo</a>
-        <a href="#comparison">Comparison</a>
-        <a href="#faq">FAQ</a>
         <a href="privacy.html">Privacy</a>
         <a href="terms.html">Terms</a>
       </nav>
-      <a href="#install" class="btn btn-primary">Add to Chrome — Free</a>
+      <a href="#install" class="btn btn-primary">Add to Chrome</a>
     </div>
   </header>
 
-  <!-- Hero Section -->
+  <!-- Hero Section (No subtitles, huge bold font) -->
   <section class="hero">
     <div class="container">
-      <div class="hero-badge">⚡ Manifest V3 &bull; 100% Local &bull; Zero Telemetry</div>
       <h1>
-        Reclaim the Web.<br>
-        <span class="highlight">Zero AI Clutter.</span>
+        Block All AI.<br>
+        <span class="highlight">Pure Web.</span>
       </h1>
-      <p class="hero-subtitle">
-        The high-performance Chrome extension designed to completely block standalone AI platforms, search engine AI overviews, and embedded chatbots. Take back your cognitive focus and privacy.
-      </p>
 
-      <div class="hero-cta" id="install">
-        <a href="#" class="btn btn-primary" onclick="alert('Ready to upload to Chrome Web Store! Load unpacked folder in chrome://extensions to use immediately.'); return false;">
-          <span>🌐 Add to Chrome (Manifest V3)</span>
-        </a>
-        <a href="https://github.com" target="_blank" class="btn btn-secondary">
-          <span>⭐ Open Source on GitHub</span>
+      <div class="hero-actions" id="install">
+        <a href="#" class="btn btn-primary btn-large" onclick="alert('Ready to upload! Load unpacked folder in chrome://extensions to use right away.'); return false;">
+          Add to Chrome — Free
         </a>
       </div>
 
       <!-- Interactive Before/After Demo -->
       <div class="demo-preview" id="demo">
         <div class="demo-bar">
-          <div class="demo-title">
-            <span>🛡️ Interactive Simulation: Google Search with ZeroWeb AI</span>
-          </div>
+          <span class="demo-title">Live Simulator</span>
           <div class="demo-toggle-switch">
-            <span class="demo-switch-label" id="demoStatusLabel">AI Blocker: <strong>ACTIVE</strong></span>
-            <button class="btn btn-primary" id="demoToggleBtn" style="padding: 6px 14px; font-size: 12px;">Toggle Shield</button>
+            <span class="demo-switch-label" id="demoStatusLabel">AI Blocker: <strong style="color: #10b981;">ACTIVE</strong></span>
+            <button class="btn btn-secondary" id="demoToggleBtn" style="padding: 8px 16px; font-size: 13px;">Disable Shield</button>
           </div>
         </div>
 
         <div class="mock-search-engine">
           <div class="mock-search-input">
             <span>🔍</span>
-            <span>best way to learn python programming without hallucinations</span>
+            <span>best python tutorial for beginners</span>
           </div>
 
           <!-- Mock AI Overview Container (Toggled by user) -->
           <div class="mock-ai-overview" id="mockAiBox" style="display: none;">
-            <div class="mock-ai-header">
-              <span>✨ Generative AI Overview (Unverified)</span>
-            </div>
+            <div class="mock-ai-header">✨ AI Overview (Unverified)</div>
             <div class="mock-ai-content">
-              Python is a high-level programming language invented in 1991. You should try memorizing every library at once or installing random packages. Here is a hallucinated summary of things that might or might not work...
+              Python was created in 1991. You should try random libraries and learn everything at once...
             </div>
           </div>
 
-          <!-- Authentic Organic Results -->
+          <!-- Clean Human Results -->
           <div class="mock-result">
             <div class="mock-result-link">https://www.python.org &rsaquo; doc</div>
-            <div class="mock-result-title">The Python Tutorial &mdash; Python 3.13 Documentation</div>
-            <div class="mock-result-snippet">Python is an easy to learn, powerful programming language. It has efficient high-level data structures and a simple but effective approach to object-oriented programming. Written and maintained by human engineers.</div>
+            <div class="mock-result-title">The Python Tutorial &mdash; Official Documentation</div>
+            <div class="mock-result-snippet">Python is an easy to learn, powerful programming language written and maintained by human software developers.</div>
           </div>
 
           <div class="mock-result">
-            <div class="mock-result-link">https://docs.python-guide.org &rsaquo; intro</div>
-            <div class="mock-result-title">The Hitchhiker's Guide to Python &mdash; Kenneth Reitz</div>
-            <div class="mock-result-snippet">This opinionated guide exists to provide both for novice and expert Python developers a best-practice handbook to the installation, configuration, and daily usage of Python.</div>
+            <div class="mock-result-link">https://docs.python-guide.org</div>
+            <div class="mock-result-title">The Hitchhiker's Guide to Python</div>
+            <div class="mock-result-snippet">An opinionated best-practice guide for developers installing and writing Python code.</div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Features Grid -->
+  <!-- Big Feature Cards (No subtitles, bold large font) -->
   <section class="features-section" id="features">
     <div class="container">
-      <div class="section-header">
-        <span class="section-tag">Why ZeroWeb AI</span>
-        <h2>Engineered for Absolute Clarity</h2>
-        <p>Built from the ground up on modern Chrome Manifest V3 APIs for instantaneous blocking with zero browser slowdown.</p>
-      </div>
+      <h2 class="section-title-big">Built for Speed and Focus</h2>
 
       <div class="features-grid">
         <div class="feature-card">
           <span class="feature-icon">🛡️</span>
-          <h3>All AI Blocked by Default</h3>
-          <p>Zero configuration required. Over 40+ standalone AI platforms (ChatGPT, Claude, Gemini, DeepSeek, Grok) are completely blocked immediately upon installation.</p>
+          <h3>40+ AI Sites Blocked</h3>
+          <p>ChatGPT, Claude, Gemini, DeepSeek, and Grok are completely blocked by default.</p>
         </div>
 
         <div class="feature-card">
           <span class="feature-icon">⚡</span>
-          <h3>Zero-FOUC DOM Purge</h3>
-          <p>Injected at document_start to instantly suppress Google AI Overviews, Bing Copilot sidebars, and Grok drawers with zero screen flicker.</p>
+          <h3>Zero AI Overviews</h3>
+          <p>Google Search generative boxes and Bing Copilot sidebars are stripped before page paint.</p>
         </div>
 
         <div class="feature-card">
           <span class="feature-icon">🔒</span>
-          <h3>100% Offline & Private</h3>
-          <p>Zero telemetry, zero analytics, zero external API endpoints. All rules and storage stay strictly inside your local browser profile.</p>
+          <h3>100% Private</h3>
+          <p>Zero telemetry, zero servers, zero analytics. Everything runs locally on your machine.</p>
         </div>
 
         <div class="feature-card">
           <span class="feature-icon">🎯</span>
-          <h3>Minimal, Workable Settings</h3>
-          <p>No bloated configuration menus. Toggle the master shield or whitelist websites you want to access with a single click.</p>
+          <h3>1-Click Whitelist</h3>
+          <p>Easily allow any website with a single click from the extension toolbar popup.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Comparison Section -->
-  <section class="comparison-section" id="comparison">
+  <!-- Big CTA Banner -->
+  <section class="cta-banner">
     <div class="container">
-      <div class="section-header">
-        <span class="section-tag">Direct Comparison</span>
-        <h2>ZeroWeb AI vs Standard Ad Blockers</h2>
-        <p>Standard ad blockers target advertising networks. ZeroWeb AI specifically eradicates generative AI bloat and cognitive pollution.</p>
-      </div>
-
-      <table class="comparison-table">
-        <thead>
-          <tr>
-            <th>Feature</th>
-            <th>ZeroWeb AI</th>
-            <th>Standard Ad Blockers</th>
-            <th>Custom UserScripts</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Standalone AI Platform Blocking (ChatGPT, Claude, Gemini)</td>
-            <td><span class="check">✓ Full Native Redirect</span></td>
-            <td><span class="cross">✗ None</span></td>
-            <td><span class="cross">✗ Fragmented</span></td>
-          </tr>
-          <tr>
-            <td>Google AI Overview Zero-FOUC Suppression</td>
-            <td><span class="check">✓ Instantaneous</span></td>
-            <td><span class="cross">✗ Inconsistent</span></td>
-            <td><span class="cross">✗ Flashes on Load</span></td>
-          </tr>
-          <tr>
-            <td>Social Media AI Inlines (Grok, LinkedIn AI)</td>
-            <td><span class="check">✓ Built-in & Maintained</span></td>
-            <td><span class="cross">✗ Missed</span></td>
-            <td><span class="cross">✗ Fragile</span></td>
-          </tr>
-          <tr>
-            <td>Floating Web AI Chatbots & Widgets</td>
-            <td><span class="check">✓ Auto-Stripped</span></td>
-            <td><span class="check">✓ Partial</span></td>
-            <td><span class="cross">✗ Manual only</span></td>
-          </tr>
-          <tr>
-            <td>Battery & CPU Efficiency</td>
-            <td><span class="check">✓ Manifest V3 Native</span></td>
-            <td><span class="check">✓ Moderate</span></td>
-            <td><span class="cross">✗ Heavy CPU Loops</span></td>
-          </tr>
-        </tbody>
-      </table>
+      <h2>Ready for an AI-Free Web?</h2>
+      <a href="#install" class="btn btn-primary btn-large" onclick="alert('Ready to upload! Load unpacked folder in chrome://extensions to use right away.'); return false;">
+        Add to Chrome — Free
+      </a>
     </div>
   </section>
 
-  <!-- FAQ Section -->
-  <section class="faq-section" id="faq">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-tag">Frequently Asked Questions</span>
-        <h2>Got Questions? We Have Answers.</h2>
-      </div>
-
-      <div class="faq-grid">
-        <div class="faq-item">
-          <h4>Does ZeroWeb AI slow down my browsing?</h4>
-          <p>Quite the opposite! By utilizing Chrome's native DeclarativeNetRequest API and document_start CSS injection, ZeroWeb AI prevents bulky AI scripts, WebSockets, and heavy widgets from downloading, speeding up page load times and saving bandwidth.</p>
-        </div>
-
-        <div class="faq-item">
-          <h4>Can I temporarily unblock a specific site?</h4>
-          <p>Yes. Clicking the extension icon in your browser toolbar lets you whitelist the active website with one click or grant a 10-minute temporary bypass with automatic re-blocking.</p>
-        </div>
-
-        <div class="faq-item">
-          <h4>Does ZeroWeb AI collect any of my browsing data?</h4>
-          <p>No. ZeroWeb AI has a strict Zero-Data policy. The extension contains zero tracking libraries, zero telemetry, and zero remote server connections. All operations happen strictly on your local computer.</p>
-        </div>
-
-        <div class="faq-item">
-          <h4>Can I block custom AI domains or CSS selectors?</h4>
-          <p>Yes! In the extension Options dashboard, you can add custom domain wildcards and custom CSS selectors to hide any unwanted element across the web.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
+  <!-- Minimal Footer -->
   <footer class="site-footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div>
-          <div class="brand">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="32" height="32" class="brand-logo">
-              <circle cx="64" cy="64" r="56" fill="#0F172A" stroke="#E11D48" stroke-width="4" />
-              <circle cx="64" cy="64" r="34" fill="none" stroke="#F43F5E" stroke-width="8" />
-              <line x1="38" y1="38" x2="90" y2="90" stroke="#E11D48" stroke-width="8" stroke-linecap="round" />
-              <circle cx="92" cy="36" r="4.5" fill="#38BDF8" />
-              <circle cx="36" cy="92" r="4.5" fill="#38BDF8" />
-            </svg>
-            <span class="brand-title">ZeroWeb AI</span>
-          </div>
-          <p class="footer-desc">
-            Empowering human intellect by eliminating artificial clutter, hallucinations, and digital distraction across the modern web.
-          </p>
-        </div>
-        <div class="footer-col">
-          <h5>Navigation</h5>
-          <ul>
-            <li><a href="#features">Features</a></li>
-            <li><a href="#demo">Live Demo</a></li>
-            <li><a href="#comparison">Comparison</a></li>
-            <li><a href="#faq">FAQ</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h5>Legal & Compliance</h5>
-          <ul>
-            <li><a href="privacy.html">Privacy Policy</a></li>
-            <li><a href="terms.html">Terms of Service</a></li>
-            <li><a href="../extension/manifest.json">Manifest Spec</a></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="footer-bottom">
-        <span>&copy; 2026 ZeroWeb AI. All rights reserved. Chrome is a trademark of Google LLC.</span>
-        <span>Manifest V3 Compliant &bull; Open Source</span>
+    <div class="container footer-wrap">
+      <span class="footer-copy">&copy; 2026 ZeroWeb AI &bull; Manifest V3 Certified</span>
+      <div class="footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
       </div>
     </div>
   </footer>
 
-  <!-- Demo Interactive Script -->
+  <!-- Demo Script -->
   <script>
     const demoToggleBtn = document.getElementById('demoToggleBtn');
     const mockAiBox = document.getElementById('mockAiBox');

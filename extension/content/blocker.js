@@ -176,7 +176,7 @@
           type: 'REPORT_BLOCKED',
           count: blockedCount
         });
-      } catch (e) {}
+      } catch (e) { }
     }, 200);
   }
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Privacy Policy - ZeroWeb AI</title>
+  <title>Privacy Policy &mdash; ZeroWeb AI</title>
   <meta name="description" content="Privacy Policy for ZeroWeb AI Chrome Extension. Strict Zero-Data Collection and Chrome Web Store Compliance.">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="stylesheet" href="styles.css">
@@ -13,7 +13,7 @@
   <header class="site-header">
     <div class="container nav-wrap">
       <a href="index.html" class="brand">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="36" height="36" class="brand-logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="40" height="40" class="brand-logo">
           <circle cx="64" cy="64" r="56" fill="#0F172A" stroke="#E11D48" stroke-width="4" />
           <circle cx="64" cy="64" r="34" fill="none" stroke="#F43F5E" stroke-width="8" />
           <line x1="38" y1="38" x2="90" y2="90" stroke="#E11D48" stroke-width="8" stroke-linecap="round" />
@@ -24,11 +24,11 @@
       </a>
       <nav class="nav-links">
         <a href="index.html#features">Features</a>
-        <a href="index.html#faq">FAQ</a>
-        <a href="privacy.html" style="color: var(--text-main);">Privacy Policy</a>
-        <a href="terms.html">Terms of Service</a>
+        <a href="index.html#demo">Live Demo</a>
+        <a href="privacy.html" style="color: var(--text-main);">Privacy</a>
+        <a href="terms.html">Terms</a>
       </nav>
-      <a href="index.html" class="btn btn-secondary">Back to Home</a>
+      <a href="index.html" class="btn btn-secondary">Home</a>
     </div>
   </header>
 
@@ -37,108 +37,70 @@
     <div class="container legal-content">
       <div class="legal-header">
         <h1>Privacy Policy</h1>
-        <p class="effective-date">Effective Date: November 21, 2026 &bull; Version 1.0</p>
       </div>
 
       <section>
-        <h2>1. Single Purpose Statement</h2>
+        <h2>1. Single Purpose</h2>
         <p>
-          ZeroWeb AI ("the Extension", "we", "us", or "our") is designed exclusively to detect, block, and hide standalone generative AI platforms, search engine AI overviews, social media AI triggers, and embedded chat assistants. We strictly adhere to the Google Chrome Web Store Single Purpose Policy.
+          ZeroWeb AI is designed exclusively to detect and block standalone AI platforms, search engine AI overviews, and embedded chatbot widgets in strict accordance with the Google Chrome Web Store Single Purpose Policy.
         </p>
       </section>
 
       <section>
         <h2>2. Zero-Data Collection Guarantee</h2>
         <p>
-          ZeroWeb AI does <strong>NOT</strong> collect, transmit, log, monetize, or sell any personal information or web browsing data whatsoever.
+          ZeroWeb AI does NOT collect, transmit, log, or sell any user data whatsoever:
         </p>
         <ul>
-          <li>We do NOT collect personally identifiable information (names, emails, credentials).</li>
-          <li>We do NOT track or record your browsing history or search queries.</li>
-          <li>We do NOT intercept keystrokes, form submissions, or webpage contents.</li>
-          <li>We do NOT embed analytics SDKs, advertising trackers, or tracking pixels.</li>
-          <li>We do NOT transmit data to any external server or cloud endpoint.</li>
+          <li>Zero personally identifiable information collected.</li>
+          <li>Zero browsing history or search queries tracked.</li>
+          <li>Zero keystrokes or webpage contents intercepted.</li>
+          <li>Zero analytics SDKs or remote connections.</li>
         </ul>
       </section>
 
       <section>
-        <h2>3. Local Storage Usage</h2>
+        <h2>3. Local Device Storage</h2>
         <p>
-          ZeroWeb AI uses the standard <code>chrome.storage.local</code> API purely to persist your user-configured preferences locally on your physical device. These items include:
+          We use <code>chrome.storage.local</code> strictly on your device to persist:
         </p>
         <ul>
-          <li>Your master protection toggle state (On/Off).</li>
-          <li>Your selected protection categories (Standalone AI, Search Overviews, Social Media AI, Chatbots).</li>
-          <li>Your user-defined whitelisted domains and custom blocked domains.</li>
-          <li>Your custom CSS selectors.</li>
-          <li>Aggregated, anonymous numeric counters of blocked items (e.g., total items blocked) displayed in your toolbar popup.</li>
+          <li>Your master shield toggle state.</li>
+          <li>Your user-whitelisted domains.</li>
+          <li>Anonymous numeric count of blocked elements.</li>
         </ul>
         <p>
-          This data never leaves your computer and is immediately erased if you choose to uninstall the extension or click "Reset to Defaults".
+          This data never leaves your browser and is erased upon uninstalling.
         </p>
       </section>
 
       <section>
-        <h2>4. Browser Permissions Justification</h2>
-        <p>
-          In full accordance with the Chrome Web Store Developer Program Policies, ZeroWeb AI requests only the minimum necessary permissions required to fulfill its core function:
-        </p>
+        <h2>4. Chrome Permissions</h2>
         <ul>
-          <li>
-            <strong><code>declarativeNetRequest</code>:</strong> Required to block and redirect network traffic to known standalone AI domains (e.g. ChatGPT, Claude, Gemini) with native browser efficiency.
-          </li>
-          <li>
-            <strong><code>storage</code>:</strong> Required to store your configuration, custom rules, and local statistics locally on your machine.
-          </li>
-          <li>
-            <strong><code>tabs</code>:</strong> Required exclusively to determine the hostname of the currently active tab so the toolbar popup can display site-specific whitelist controls and page statistics.
-          </li>
-          <li>
-            <strong><code>alarms</code>:</strong> Required to automatically expire temporary 10-minute bypasses without consuming background CPU cycles.
-          </li>
-          <li>
-            <strong>Host Permissions (<code>&lt;all_urls&gt;</code>):</strong> Required to inject the content blocker script across search engines, social platforms, and websites to hide embedded AI overviews and chatbot overlays.
-          </li>
+          <li><strong>declarativeNetRequest:</strong> Native network blocking of known AI domains.</li>
+          <li><strong>storage:</strong> Storing your settings and whitelist locally.</li>
+          <li><strong>tabs:</strong> Reading active tab domain to allow 1-click whitelisting.</li>
+          <li><strong>Host permissions (&lt;all_urls&gt;):</strong> Suppressing AI overviews in the DOM.</li>
         </ul>
       </section>
 
       <section>
-        <h2>5. Chrome Web Store Compliance & Limited Use</h2>
+        <h2>5. Contact</h2>
         <p>
-          ZeroWeb AI strictly complies with the Chrome Web Store Developer Program Policies, including the User Data Policy and Limited Use requirements:
-        </p>
-        <ul>
-          <li>The Extension's use of information received from Google APIs will adhere to the Chrome Web Store Developer Program Policies, including the Limited Use requirements.</li>
-          <li>We do not allow any third-party access to local data.</li>
-          <li>We do not use local data for personalized advertising, credit assessment, or lending purposes.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>6. Changes to this Policy</h2>
-        <p>
-          If we make changes to this Privacy Policy, the updated version will be posted here along with a revised effective date. Because we collect zero contact information, we recommend reviewing this page periodically.
-        </p>
-      </section>
-
-      <section>
-        <h2>7. Contact Us</h2>
-        <p>
-          If you have questions, comments, or suggestions regarding this Privacy Policy or ZeroWeb AI, please contact our open-source maintainers at:
-        </p>
-        <p>
-          Email: <a href="mailto:privacy@zerowebai.org" style="color: var(--cyan);">privacy@zerowebai.org</a><br>
-          Official Website: <a href="index.html" style="color: var(--cyan);">https://zerowebai.org</a>
+          Email: <a href="mailto:privacy@zerowebai.org" style="color: var(--cyan);">privacy@zerowebai.org</a>
         </p>
       </section>
     </div>
   </main>
 
-  <!-- Footer -->
+  <!-- Minimal Footer -->
   <footer class="site-footer">
-    <div class="container footer-bottom">
-      <span>&copy; 2026 ZeroWeb AI. All rights reserved.</span>
-      <span><a href="terms.html" style="color: var(--text-muted); text-decoration: none;">Terms of Service</a></span>
+    <div class="container footer-wrap">
+      <span class="footer-copy">&copy; 2026 ZeroWeb AI</span>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="terms.html">Terms of Service</a>
+      </div>
     </div>
   </footer>
 </body>
