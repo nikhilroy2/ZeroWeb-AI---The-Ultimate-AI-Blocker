@@ -12,10 +12,7 @@
     <header class="app-header">
       <div class="brand">
         <img src="../assets/icons/icon48.png" alt="ZeroWeb AI" class="logo">
-        <div>
-          <h1>ZeroWeb AI Settings</h1>
-          <p class="subtitle">Default Mode: All AI websites, search overviews, and chatbots are blocked.</p>
-        </div>
+        <h1>ZeroWeb AI Settings</h1>
       </div>
       <div class="master-control">
         <span class="master-label" id="masterStatusLabel">Shield Active</span>
@@ -30,7 +27,6 @@
     <section class="card">
       <div class="card-header">
         <h2>Allowed Websites (Exceptions)</h2>
-        <p class="card-desc">Websites listed here will not be blocked. Add any AI site you want to allow.</p>
       </div>
 
       <div class="input-row">
@@ -40,7 +36,7 @@
 
       <div class="whitelist-box" id="whitelistContainer">
         <!-- Dynamically populated -->
-        <div class="empty-state">No websites allowed. ZeroWeb AI is actively blocking ALL AI sites by default.</div>
+        <div class="empty-state">No websites allowed.</div>
       </div>
     </section>
 
@@ -48,13 +44,11 @@
     <section class="card">
       <div class="card-header">
         <h2>Block Page Behavior</h2>
-        <p class="card-desc">Control what happens when navigating directly to a blocked AI platform.</p>
       </div>
 
       <div class="toggle-row">
         <div class="toggle-info">
           <strong>Show "Access Blocked" Screen</strong>
-          <span>Displays an informative block screen with a 1-click whitelist button instead of a silent browser network error.</span>
         </div>
         <label class="switch">
           <input type="checkbox" id="showBlockedPageToggle" checked>
@@ -67,21 +61,16 @@
     <section class="card">
       <div class="card-header">
         <h2>Interception Statistics</h2>
-        <p class="card-desc">Track how many AI scripts, network requests, and DOM widgets were blocked.</p>
       </div>
 
       <div class="stats-box">
         <div class="stat-number-box">
           <span class="stat-big" id="totalBlockedNum">0</span>
-          <span class="stat-text">Total AI Requests & Elements Blocked</span>
+          <span class="stat-text">Total Blocked</span>
         </div>
         <button class="btn btn-outline" id="resetStatsBtn">Reset Counter</button>
       </div>
     </section>
-
-    <footer class="app-footer">
-      <span>ZeroWeb AI v1.0.0 &bull; Manifest V3 &bull; 100% Local &amp; Private</span>
-    </footer>
   </div>
 
   <div id="toast" class="toast"></div>

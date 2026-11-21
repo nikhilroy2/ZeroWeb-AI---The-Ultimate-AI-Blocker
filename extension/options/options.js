@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const master = res.masterEnabled ?? true;
       masterToggle.checked = master;
-      masterStatusLabel.textContent = master ? 'Shield Active (All AI Blocked)' : 'Shield Disabled';
+      masterStatusLabel.textContent = master ? 'Shield Active' : 'Shield Disabled';
       masterStatusLabel.className = master ? 'master-label' : 'master-label disabled';
 
       showBlockedPageToggle.checked = res.showBlockedPage ?? true;
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderWhitelist(domains) {
     whitelistContainer.innerHTML = '';
     if (!domains.length) {
-      whitelistContainer.innerHTML = '<div class="empty-state">No websites allowed. ZeroWeb AI is actively blocking ALL AI sites by default.</div>';
+      whitelistContainer.innerHTML = '<div class="empty-state">No websites allowed.</div>';
       return;
     }
 
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
       row.querySelector('.remove-btn').addEventListener('click', () => {
         chrome.runtime.sendMessage({ type: 'REMOVE_WHITELIST', domain }, () => {
-          showToast(`"${domain}" removed. It is now blocked again.`);
+          showToast(`"${domain}" removed.`);
           loadSettings();
         });
       });
@@ -79,12 +79,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let domain = domainInput.value.trim().toLowerCase();
     if (!domain) return;
 
-    // Strip http:// or https:// if pasted by user
     domain = domain.replace(/^https?:\/\//i, '').split('/')[0];
 
     chrome.runtime.sendMessage({ type: 'ADD_WHITELIST', domain }, () => {
       domainInput.value = '';
-      showToast(`"${domain}" is now allowed.`);
+      showToast(`"${domain}" allowed.`);
       loadSettings();
     });
   }
@@ -97,13 +96,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // Toggle show blocked page
   showBlockedPageToggle.addEventListener('change', () => {
     chrome.runtime.sendMessage({ type: 'TOGGLE_BLOCKED_PAGE' }, () => {
-      showToast('Block page preference saved');
+      showToast('Preference saved');
     });
   });
 
   // Reset stats
   resetStatsBtn.addEventListener('click', () => {
-    if (confirm('Reset total blocked counter to 0?')) {
+    if (confirm('Reset counter to 0?')) {
       chrome.runtime.sendMessage({ type: 'RESET_STATS' }, () => {
         showToast('Counter reset to 0');
         loadSettings();
