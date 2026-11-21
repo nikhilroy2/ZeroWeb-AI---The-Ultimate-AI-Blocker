@@ -28,8 +28,7 @@
     "declarativeNetRequest",
     "storage",
     "tabs",
-    "webNavigation",
-    "alarms"
+    "webNavigation"
   ],
   "host_permissions": [
     "<all_urls>"
