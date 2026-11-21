@@ -1,7 +1,8 @@
 /**
  * ZeroWeb AI - Content Script DOM Mutation Observer & Element Purger
  * Active by default on all websites unless whitelisted or master switch is OFF.
- * Removes AI Overviews, search generative widgets, social AI drawers, and embedded chatbots.
+ * Automatically intercepts any .ai domain or standalone AI platform,
+ * and removes AI Overviews, search generative widgets, social AI drawers, and embedded chatbots.
  */
 
 (function () {
@@ -14,7 +15,42 @@
   let blockedCount = 0;
   let reportTimer = null;
 
-  // Comprehensive AI Element Selectors (Active by default)
+  // Standalone non-.ai platforms that must be redirected
+  const STANDALONE_AI_DOMAINS = [
+    'chatgpt.com',
+    'chat.openai.com',
+    'openai.com',
+    'gemini.google.com',
+    'copilot.microsoft.com',
+    'deepseek.com',
+    'chat.deepseek.com',
+    'grok.com',
+    'midjourney.com',
+    'suno.com',
+    'suno.ai',
+    'udio.com',
+    'runwayml.com',
+    'runway.com',
+    'v0.dev',
+    'civitai.com',
+    'janitorai.com',
+    'poe.com',
+    'you.com',
+    'monica.im'
+  ];
+
+  function isAiPlatform(hostname) {
+    // All .ai TLD domains (e.g. manus.ai, claude.ai, perplexity.ai)
+    if (hostname.endsWith('.ai') || hostname === 'ai') {
+      return true;
+    }
+    // Specific non-.ai standalone platforms
+    return STANDALONE_AI_DOMAINS.some(
+      (d) => hostname === d || hostname.endsWith('.' + d)
+    );
+  }
+
+  // Comprehensive AI Element Selectors for regular websites
   const AI_SELECTORS = [
     // 1. Google Search AI Overviews & Gemini
     'div#mfe-c',
@@ -117,7 +153,13 @@
           return;
         }
 
-        // Active: Purge DOM and monitor
+        // If this is a standalone AI site or .ai domain and not whitelisted, redirect immediately!
+        if (isAiPlatform(currentHost)) {
+          window.location.replace(chrome.runtime.getURL('blocked/blocked.html'));
+          return;
+        }
+
+        // On regular websites: Purge embedded AI elements and observe DOM
         purgeDOM();
         startObserver();
       });
@@ -157,9 +199,7 @@
           count++;
         }
       }
-    } catch (e) {
-      // Ignore query errors
-    }
+    } catch (e) {}
 
     if (count > 0) {
       blockedCount += count;
@@ -176,7 +216,7 @@
           type: 'REPORT_BLOCKED',
           count: blockedCount
         });
-      } catch (e) { }
+      } catch (e) {}
     }, 200);
   }
 
@@ -207,13 +247,21 @@
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-      purgeDOM();
-      startObserver();
+      if (!isAiPlatform(currentHost)) {
+        purgeDOM();
+        startObserver();
+      }
     });
   } else {
-    purgeDOM();
-    startObserver();
+    if (!isAiPlatform(currentHost)) {
+      purgeDOM();
+      startObserver();
+    }
   }
 
-  window.addEventListener('load', purgeDOM);
+  window.addEventListener('load', () => {
+    if (!isAiPlatform(currentHost)) {
+      purgeDOM();
+    }
+  });
 })();
