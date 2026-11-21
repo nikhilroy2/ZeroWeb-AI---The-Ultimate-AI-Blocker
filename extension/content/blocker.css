@@ -1,0 +1,202 @@
+/**
+ * ZeroWeb AI - Instant CSS Element Blocker
+ * Injected at document_start to instantly prevent Flash of Unstyled Content (FOUC)
+ * for known AI widgets, search engine overviews, and social AI clutter.
+ */
+
+/* ==========================================================================
+   1. Google Search - AI Overview & Gemini Badges
+   ========================================================================== */
+div#mfe-c,
+div.x54gtf,
+div.ULSxyf:has([data-async-context*="ai_overview"]),
+div[data-attrid="wa:/m/012..."],
+div[aria-label="AI Overview" i],
+div[data-as="aio"],
+div[data-attrid="ai_overview"],
+div.Yz2fe,
+div:has(> [data-mc-name="AI Overview"]),
+div#botstuff div:has(> [data-async-context*="ai_overview"]),
+div[data-g-id*="gemini"],
+div:has(> a[href*="gemini.google.com"]),
+button[aria-label*="Ask Gemini" i],
+div[data-component="ai-overview"],
+div.MjjYud:has([data-attrid="ai_overview"]) {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* ==========================================================================
+   2. Microsoft Bing - Copilot Search Summaries & Sidebar
+   ========================================================================== */
+#b_copilot,
+.b_ans_copilot,
+.cib-serp-main,
+#copilot_app,
+div[id*="copilot"],
+div[class*="copilot"],
+div[data-priority="1"]:has(cib-serp),
+.b_ans:has(cib-serp),
+cib-serp,
+div#b_header:has([aria-label*="Copilot" i]) .b_copilot_btn {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* ==========================================================================
+   3. Twitter / X - Grok Sidebar, Buttons & AI Inlines
+   ========================================================================== */
+a[aria-label="Grok" i],
+a[href="/i/grok"],
+[data-testid="GrokDrawer"],
+div[data-testid="grok-pill"],
+div[data-testid="grok-button"],
+div:has(> a[href="/i/grok"]),
+div[aria-label="Grok Drawer" i],
+button[aria-label*="Grok" i] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+}
+
+/* ==========================================================================
+   4. LinkedIn - AI Post Suggestions & "Write with AI"
+   ========================================================================== */
+button[aria-label*="AI" i],
+div.feed-shared-update-v2__ai-summary,
+div.update-components-ai-summary,
+.artdeco-button:has(svg[data-test-icon*="sparkle"]),
+button.ai-editor-assistant-btn,
+div[data-control-name="ai_assistant"],
+button[data-test-icon="sparkles"],
+.msg-compose-ai-assistant {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+}
+
+/* ==========================================================================
+   5. YouTube - AI Video Summaries & "Ask" Button
+   ========================================================================== */
+ytd-ai-summary-renderer,
+ytd-rich-shelf-renderer:has([aria-label*="AI" i]),
+button[aria-label*="Ask" i]:has(svg),
+ytd-expandable-metadata-renderer:has([title*="AI" i]),
+#ai-summary,
+yt-formatted-string:has(> span[aria-label*="AI summary" i]) {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+}
+
+/* ==========================================================================
+   6. Reddit - AI Answers & Overviews
+   ========================================================================== */
+shreddit-ai-overview,
+div[data-testid*="ai-summary"],
+div[id*="ai-answer"],
+faceplate-tracker[source="ai_summary"],
+reddit-ai-summary {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+}
+
+/* ==========================================================================
+   7. GitHub - Copilot Chat Buttons & Summaries
+   ========================================================================== */
+copilot-chat-button,
+[data-component="copilot-chat"],
+.copilot-summary,
+div[aria-label*="Copilot" i],
+div:has(> a[href*="/features/copilot"]),
+button[aria-label*="Copilot" i] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+}
+
+/* ==========================================================================
+   8. Amazon - AI Customer Review Highlights
+   ========================================================================== */
+div[data-hook="ai-summary-card"],
+#cr-summarization-attributes,
+div[id*="ai-insights"],
+div[data-testid="ai-generated-summary"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+}
+
+/* ==========================================================================
+   9. Floating AI Chatbots, Embeds & Support Agents
+   ========================================================================== */
+#intercom-container,
+iframe#intercom-frame,
+#intercom-lightweight-app,
+#drift-widget,
+iframe[id*="drift"],
+#drift-frame-chat,
+#tidio-chat,
+iframe[id*="tidio"],
+div#chatbase-bubble-window,
+iframe[src*="chatbase.co"],
+iframe[src*="voiceflow.com"],
+div#voiceflow-chat,
+div#dante-widget,
+iframe[src*="dante-ai.com"],
+div#chatling-widget,
+iframe[src*="chatling.ai"],
+div[id*="ai-chat-bubble" i],
+div[class*="ai-chatbot" i],
+div[id*="kapa-widget"],
+iframe[src*="kapa.ai"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+}
+
+/* ==========================================================================
+   10. ZeroWeb AI Dynamic Block Tag
+   ========================================================================== */
+[data-zero-ai-blocked="true"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+}
