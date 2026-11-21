@@ -1,15 +1,48 @@
 /**
  * ZeroWeb AI - Background Service Worker (Manifest V3)
- * Default: ALL AI domains and embedded AI tools are blocked out-of-the-box.
- * Streamlined, zero-bloat state synchronization and dynamic whitelist management.
+ * Blocks ALL AI websites (.ai domains & standalone AI platforms) by default.
+ * Multi-layer interception: DeclarativeNetRequest + webNavigation + tabs.
  */
 
 const DEFAULT_SETTINGS = {
-  masterEnabled: true,        // All AI blocked by default
-  whitelistedDomains: [],     // Websites explicitly allowed by user
-  showBlockedPage: true,      // Redirect to custom Access Blocked page
-  totalBlocked: 0             // Total elements/requests blocked
+  masterEnabled: true,
+  whitelistedDomains: [],
+  showBlockedPage: true,
+  totalBlocked: 0
 };
+
+// Known standalone non-.ai domains
+const STANDALONE_AI_DOMAINS = [
+  'chatgpt.com',
+  'chat.openai.com',
+  'openai.com',
+  'gemini.google.com',
+  'copilot.microsoft.com',
+  'deepseek.com',
+  'chat.deepseek.com',
+  'grok.com',
+  'midjourney.com',
+  'suno.com',
+  'suno.ai',
+  'udio.com',
+  'runwayml.com',
+  'runway.com',
+  'v0.dev',
+  'civitai.com',
+  'janitorai.com',
+  'poe.com',
+  'you.com',
+  'monica.im'
+];
+
+function isAiHost(hostname) {
+  if (!hostname) return false;
+  // Matches any .ai domain (e.g. manus.ai, claude.ai, perplexity.ai, etc.)
+  if (hostname.endsWith('.ai') || hostname === 'ai') return true;
+  return STANDALONE_AI_DOMAINS.some(
+    (d) => hostname === d || hostname.endsWith('.' + d)
+  );
+}
 
 // In-memory tab tracking
 const tabBlockedCounts = new Map();
@@ -33,13 +66,61 @@ chrome.runtime.onStartup.addListener(async () => {
   await syncRules(data);
 });
 
-// Track navigations to capture destination domain for the blocked screen
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  if (changeInfo.url) {
-    if (!changeInfo.url.startsWith(chrome.runtime.getURL('blocked/blocked.html'))) {
-      lastAttemptedUrls.set(tabId, changeInfo.url);
-    }
+/**
+ * Layer 1: webNavigation.onBeforeNavigate
+ * Intercepts navigation to any .ai domain or AI platform BEFORE network transmission
+ */
+if (chrome.webNavigation?.onBeforeNavigate) {
+  chrome.webNavigation.onBeforeNavigate.addListener(async (details) => {
+    if (details.frameId !== 0) return; // main frame only
+    const url = details.url;
+    if (!url || !url.startsWith('http')) return;
+
+    try {
+      const host = new URL(url).hostname.toLowerCase();
+      if (!isAiHost(host)) return;
+
+      const data = await chrome.storage.local.get(['masterEnabled', 'whitelistedDomains']);
+      if (data.masterEnabled === false) return;
+
+      const whitelist = data.whitelistedDomains || [];
+      const isAllowed = whitelist.some((d) => host === d || host.endsWith('.' + d));
+
+      if (!isAllowed) {
+        lastAttemptedUrls.set(details.tabId, url);
+        chrome.tabs.update(details.tabId, {
+          url: chrome.runtime.getURL('blocked/blocked.html')
+        });
+      }
+    } catch (e) {}
+  });
+}
+
+/**
+ * Layer 2: tabs.onUpdated backup
+ */
+chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+  const url = changeInfo.url || tab?.url;
+  if (url && (url.startsWith('http://') || url.startsWith('https://'))) {
+    try {
+      const host = new URL(url).hostname.toLowerCase();
+      if (isAiHost(host)) {
+        const data = await chrome.storage.local.get(['masterEnabled', 'whitelistedDomains']);
+        if (data.masterEnabled === false) return;
+
+        const whitelist = data.whitelistedDomains || [];
+        const isAllowed = whitelist.some((d) => host === d || host.endsWith('.' + d));
+
+        if (!isAllowed) {
+          lastAttemptedUrls.set(tabId, url);
+          chrome.tabs.update(tabId, {
+            url: chrome.runtime.getURL('blocked/blocked.html')
+          });
+        }
+      }
+    } catch (e) {}
   }
+
   if (changeInfo.status === 'loading') {
     tabBlockedCounts.set(tabId, 0);
     updateBadge(tabId, 0);
@@ -52,14 +133,13 @@ chrome.tabs.onRemoved.addListener((tabId) => {
 });
 
 /**
- * Synchronize static ruleset and dynamic whitelist rules
+ * Layer 3: DeclarativeNetRequest Rules Synchronization
  */
 async function syncRules(settings) {
   try {
     const isMaster = settings.masterEnabled ?? true;
     const rulesetId = 'static_ai_rules';
 
-    // 1. Enable/Disable Static Rules (All AI domains blocked by default)
     if (!isMaster) {
       await chrome.declarativeNetRequest.updateEnabledRulesets({
         disableRulesetIds: [rulesetId]
@@ -70,14 +150,30 @@ async function syncRules(settings) {
       });
     }
 
-    // 2. Fetch existing dynamic rules to clear
     const existingRules = await chrome.declarativeNetRequest.getDynamicRules();
     const removeRuleIds = existingRules.map((r) => r.id);
 
     const addRules = [];
     let nextId = 10000;
 
-    // 3. Whitelisted Domains (Priority 100: Overrides static blocking)
+    // 1. Dynamic regex redirect for any .ai domain
+    if (isMaster) {
+      const blockedPageUrl = chrome.runtime.getURL('blocked/blocked.html');
+      addRules.push({
+        id: nextId++,
+        priority: 2,
+        action: {
+          type: 'redirect',
+          redirect: { regexSubstitution: blockedPageUrl }
+        },
+        condition: {
+          regexFilter: '^https?://[^/:]+\\.ai(:[0-9]+)?(/.*)?$',
+          resourceTypes: ['main_frame']
+        }
+      });
+    }
+
+    // 2. Whitelisted Domains (Priority 100: Overrides all blocking)
     const whitelisted = settings.whitelistedDomains || [];
     for (const domain of whitelisted) {
       const clean = domain.trim().toLowerCase();
@@ -111,9 +207,6 @@ async function syncRules(settings) {
   }
 }
 
-/**
- * Update toolbar icon badge
- */
 async function updateBadge(tabId, count) {
   try {
     const data = await chrome.storage.local.get(['masterEnabled']);
@@ -127,12 +220,9 @@ async function updateBadge(tabId, count) {
     if (text) {
       await chrome.action.setBadgeBackgroundColor({ color: '#E11D48', tabId });
     }
-  } catch (e) {
-    // Tab closed
-  }
+  } catch (e) {}
 }
 
-// Runtime message handler
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   const tabId = sender.tab?.id;
 
@@ -163,7 +253,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         const all = await chrome.storage.local.get(null);
         await syncRules(all);
 
-        // Update badges
         const tabs = await chrome.tabs.query({});
         for (const t of tabs) {
           const c = tabBlockedCounts.get(t.id) || 0;

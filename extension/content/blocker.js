@@ -1,19 +1,13 @@
 /**
  * ZeroWeb AI - Content Script DOM Mutation Observer & Element Purger
- * Active by default on all websites unless whitelisted or master switch is OFF.
- * Automatically intercepts any .ai domain or standalone AI platform,
- * and removes AI Overviews, search generative widgets, social AI drawers, and embedded chatbots.
+ * Synchronously intercepts any .ai domain or standalone AI platform,
+ * and purges embedded AI Overviews, widgets, and chatbots on regular sites.
  */
 
 (function () {
   'use strict';
 
   const currentHost = window.location.hostname.toLowerCase();
-  let isEnabled = true;
-  let isWhitelisted = false;
-  let observer = null;
-  let blockedCount = 0;
-  let reportTimer = null;
 
   // Standalone non-.ai platforms that must be redirected
   const STANDALONE_AI_DOMAINS = [
@@ -40,17 +34,55 @@
   ];
 
   function isAiPlatform(hostname) {
-    // All .ai TLD domains (e.g. manus.ai, claude.ai, perplexity.ai)
+    if (!hostname) return false;
+    // Intercept ANY .ai domain (e.g. manus.ai, claude.ai, perplexity.ai)
     if (hostname.endsWith('.ai') || hostname === 'ai') {
       return true;
     }
-    // Specific non-.ai standalone platforms
     return STANDALONE_AI_DOMAINS.some(
       (d) => hostname === d || hostname.endsWith('.' + d)
     );
   }
 
-  // Comprehensive AI Element Selectors for regular websites
+  // =========================================================================
+  // IMMEDIATE GUARD: If browsing any .ai or AI platform, blank page & redirect
+  // =========================================================================
+  if (isAiPlatform(currentHost)) {
+    // 1. Instantly blank page to prevent ANY rendering or flash of content
+    if (document.documentElement) {
+      document.documentElement.style.display = 'none';
+    }
+
+    // 2. Check storage directly
+    chrome.storage.local.get(['masterEnabled', 'whitelistedDomains'], (data) => {
+      const isMaster = data.masterEnabled ?? true;
+      const whitelist = data.whitelistedDomains || [];
+      const isAllowed = whitelist.some(
+        (d) => currentHost === d || currentHost.endsWith('.' + d)
+      );
+
+      if (isMaster && !isAllowed) {
+        window.location.replace(chrome.runtime.getURL('blocked/blocked.html'));
+      } else {
+        // If whitelisted or blocker disabled, restore display
+        if (document.documentElement) {
+          document.documentElement.style.display = '';
+        }
+      }
+    });
+
+    return; // Stop further execution on AI site
+  }
+
+  // =========================================================================
+  // REGULAR WEBSITES: Purge embedded AI widgets (Search, Social, Chatbots)
+  // =========================================================================
+  let isEnabled = true;
+  let isWhitelisted = false;
+  let observer = null;
+  let blockedCount = 0;
+  let reportTimer = null;
+
   const AI_SELECTORS = [
     // 1. Google Search AI Overviews & Gemini
     'div#mfe-c',
@@ -136,36 +168,24 @@
   const SELECTOR_STRING = AI_SELECTORS.join(',\n');
 
   function init() {
-    try {
-      chrome.runtime.sendMessage({ type: 'GET_STATE' }, (res) => {
-        if (!res || chrome.runtime.lastError) return;
+    chrome.storage.local.get(['masterEnabled', 'whitelistedDomains'], (res) => {
+      if (!res) return;
 
-        isEnabled = res.masterEnabled ?? true;
-        const whitelist = res.whitelistedDomains || [];
+      isEnabled = res.masterEnabled ?? true;
+      const whitelist = res.whitelistedDomains || [];
 
-        // Check if current hostname is whitelisted
-        isWhitelisted = whitelist.some(
-          (d) => currentHost === d || currentHost.endsWith('.' + d)
-        );
+      isWhitelisted = whitelist.some(
+        (d) => currentHost === d || currentHost.endsWith('.' + d)
+      );
 
-        if (!isEnabled || isWhitelisted) {
-          disableBlocker();
-          return;
-        }
+      if (!isEnabled || isWhitelisted) {
+        disableBlocker();
+        return;
+      }
 
-        // If this is a standalone AI site or .ai domain and not whitelisted, redirect immediately!
-        if (isAiPlatform(currentHost)) {
-          window.location.replace(chrome.runtime.getURL('blocked/blocked.html'));
-          return;
-        }
-
-        // On regular websites: Purge embedded AI elements and observe DOM
-        purgeDOM();
-        startObserver();
-      });
-    } catch (e) {
-      // Background not ready
-    }
+      purgeDOM();
+      startObserver();
+    });
   }
 
   function disableBlocker() {
@@ -242,26 +262,17 @@
     });
   }
 
-  // Run on start
   init();
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-      if (!isAiPlatform(currentHost)) {
-        purgeDOM();
-        startObserver();
-      }
-    });
-  } else {
-    if (!isAiPlatform(currentHost)) {
       purgeDOM();
       startObserver();
-    }
+    });
+  } else {
+    purgeDOM();
+    startObserver();
   }
 
-  window.addEventListener('load', () => {
-    if (!isAiPlatform(currentHost)) {
-      purgeDOM();
-    }
-  });
+  window.addEventListener('load', purgeDOM);
 })();

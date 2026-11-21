@@ -28,6 +28,7 @@
     "declarativeNetRequest",
     "storage",
     "tabs",
+    "webNavigation",
     "alarms"
   ],
   "host_permissions": [
@@ -67,4 +68,3 @@
     }
   ]
 }
-
